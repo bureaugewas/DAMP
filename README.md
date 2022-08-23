@@ -2,6 +2,7 @@
 Or Ddist for short
 
 Ddist is a Docker based Umbrel application for quickly spinning up and hosting Application Computer Interfaces (or APIs).
+This project is very much in progress and not for profit. Help is greatly appreciated.
 
 V1.0 The goal of the first implementation is to build a simple Docker based API with basic data interfacing functionalities:
 
