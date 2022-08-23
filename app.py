@@ -1,34 +1,46 @@
-from flask import Flask, request
+from os import listdir
+import os
+from os.path import isfile, join
+from flask import Flask, request, url_for
 from app_service import AppService
 import json
 
 app = Flask(__name__)
-appService = AppService();
-
+instances = listdir('instances')
+endpoint_dict = {}
 
 @app.route('/')
 def home():
-    return "App Works!!!"
+    inst_link = ''
+    for f in instances:
+        inst = os.path.splitext(f)[0]
+        inst_link += '<a href=\'api/' + inst + '\'>' + inst + '<a></br>'
 
+    return "Welcome to Ddist! Available instances: </br>" + inst_link
 
-@app.route('/api/tasks')
-def tasks():
-    return appService.get_tasks()
+appService=AppService()
 
-@app.route('/api/task', methods=['POST'])
-def create_task():
+@app.route('/api/<instance_name>')
+def tasks(instance_name):
+    return appService.get_tasks(instance_name)
+
+@app.route(f'/api/<instance_name>', methods=['POST'])
+def create_task(instance_name):
     request_data = request.get_json()
     task = request_data['task']
-    return appService.create_task(task)
+    return appService.create_task(instance_name,task)
 
-
-@app.route('/api/task', methods=['PUT'])
-def update_task():
+@app.route(f'/api/<instance_name>', methods=['PUT'])
+def update_task(instance_name):
     request_data = request.get_json()
-    return appService.update_task(request_data['task'])
+    return appService.update_task(instance_name,request_data['task'])
+
+@app.route(f'/api/<instance_name>/<int:id>', methods=['DELETE'])
+def delete_task(instance_name,id):
+    return appService.delete_task(instance_name,id)
 
 
-@app.route('/api/task/<int:id>', methods=['DELETE'])
-def delete_task(id):
-    return appService.delete_task(id)
+#for i in instances:
+
+  #  endpoint_dict[i] = AppEndpoint(i)
 
