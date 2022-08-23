@@ -1,46 +1,50 @@
-from os import listdir
 import os
-from os.path import isfile, join
+from os import listdir
 from flask import Flask, request, url_for
 from app_service import AppService
-import json
 
 app = Flask(__name__)
 instances = listdir('instances')
-endpoint_dict = {}
+appService=AppService()
 
-@app.route('/')
+#Human interface
+@app.route('/home')
 def home():
     inst_link = ''
     for f in instances:
         inst = os.path.splitext(f)[0]
         inst_link += '<a href=\'api/' + inst + '\'>' + inst + '<a></br>'
-
     return "Welcome to Ddist! Available instances: </br>" + inst_link
 
-appService=AppService()
+#Computer interface
+@app.route('/')
+def index():
+    endpoint_dict = {"endpoints":[]}
+    name = ''
+    for f in instances:
+        endpoint = {}
+        name = os.path.splitext(f)[0]
+        endpoint[name] = 'api/' + name
+        endpoint_dict["endpoints"].append(endpoint)
+    return endpoint_dict
 
+#get data
 @app.route('/api/<instance_name>')
-def tasks(instance_name):
-    return appService.get_tasks(instance_name)
+def get_data(instance_name):
+    return appService.get_data(instance_name)
 
-@app.route(f'/api/<instance_name>', methods=['POST'])
-def create_task(instance_name):
-    request_data = request.get_json()
-    task = request_data['task']
-    return appService.create_task(instance_name,task)
+#create new data
+@app.route('/api/<instance_name>', methods=['POST'])
+def create_data(instance_name):
+    new_data = request.get_json()
+    return appService.create_data(instance_name,new_data)
 
-@app.route(f'/api/<instance_name>', methods=['PUT'])
-def update_task(instance_name):
-    request_data = request.get_json()
-    return appService.update_task(instance_name,request_data['task'])
+#delete data
+@app.route(f'/api/<instance_name>', methods=['DELETE'])
+def delete_data(instance_name):
+    return appService.delete_data(instance_name)
 
-@app.route(f'/api/<instance_name>/<int:id>', methods=['DELETE'])
-def delete_task(instance_name,id):
-    return appService.delete_task(instance_name,id)
+#TODO: Append data
 
-
-#for i in instances:
-
-  #  endpoint_dict[i] = AppEndpoint(i)
+#TODO: Update data
 
