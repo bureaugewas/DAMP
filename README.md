@@ -1,7 +1,7 @@
 # Decentralised Data Interface System
 Or Ddist for short
 
-Ddist is a Docker based Umbrel application for quickly spinning up Application Computer Interfaces (or APIs).
+Ddist is a Docker based Umbrel application for quickly spinning up and hosting Application Computer Interfaces (or APIs).
 
 V1.0 The goal of the first implementation is to build a simple Docker based API with basic data interfacing functionalities:
 
