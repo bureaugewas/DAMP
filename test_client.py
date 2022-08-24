@@ -5,23 +5,15 @@ from werkzeug.security import generate_password_hash, check_password_hash
 #print(response.text)
 
 response = requests.delete("http://127.0.0.1:5000/api/blablabla"
-                           ,auth=('john', 'hello')
+                           ,auth=('michiel', 'test123')
                            )
 print(response)
 
-response = requests.post("http://127.0.0.1:5000/api/blablabla",
+response = requests.post("http://127.0.0.1:5000/api/newData",
                          json={"task":"test4"}
-                         ,auth=('john', 'hello')
+                         ,auth=('michiel', 'test123')
                          )
-
-print(response)
 print(response.json())
 
-# Update an existing resource
-#requests.put('https://httpbin.org/put', data = {'key':'value'})
-
-#response = requests.get("http://127.0.0.1:5000/api/tasks")
-#print(response.json())
-
-#response = requests.delete("http://127.0.0.1:5000/api/images")
-#print(response)
+response = requests.get("http://127.0.0.1:5000/api/tasks")
+print(response.json())

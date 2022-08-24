@@ -4,11 +4,16 @@ from flask import Flask, request, url_for
 from app_service import AppService
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
+import json
 
 users = {
     "john": generate_password_hash("hello"),
-    "susan": generate_password_hash("hello")
+    "susan": generate_password_hash("hello"),
+    "michiel": generate_password_hash("test123")
 }
+
+with open(f'users/users.json', 'w') as f:
+    json.dump(users, f)
 
 auth = HTTPBasicAuth()
 app = Flask(__name__)
@@ -17,7 +22,9 @@ appService=AppService()
 
 @auth.verify_password
 def verify_password(username, password):
-    if username in users and \
+    open_file = open(f'users/users.json')
+    auth_users = json.load(open_file)
+    if username in auth_users and \
             check_password_hash(users.get(username), password):
         return username
 
