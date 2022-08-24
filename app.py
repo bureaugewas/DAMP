@@ -61,8 +61,8 @@ def get_data(instance_name):
 def create_data(instance_name):
     if not request.json:
         abort(400)
-    new_data = request.get_json()
-    return appService.create_data(instance_name,new_data)
+    request_json = request.get_json()
+    return appService.create_data(instance_name,request_json)
 
 #delete data
 @app.route(f'/api/<instance_name>', methods=['DELETE'])
@@ -70,20 +70,9 @@ def create_data(instance_name):
 def delete_data(instance_name):
     return appService.delete_data(instance_name)
 
-#TODO: Append data
-
-#TODO: Update data
-
-#append data
-#@app.route(f'/api/<instance_name>', methods=['PUT'])
-#def update_data(instance_name):
-#    request_data = request.get_json()
-#    return appService.update_data(instance_name,request_data['task'])
-
-
-
-
-#for i in instances:
-
-  #  endpoint_dict[i] = AppEndpoint(i)
-
+#Append data
+@app.route('/api/<instance_name>', methods=['PUT'])
+@auth.login_required
+def append_data(instance_name):
+    request_json = request.get_json()
+    return appService.append_data(instance_name,request_json)
