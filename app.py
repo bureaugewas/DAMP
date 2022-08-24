@@ -2,21 +2,36 @@ import os
 from os import listdir
 from flask import Flask, request, url_for
 from app_service import AppService
+from flask_httpauth import HTTPBasicAuth
+from werkzeug.security import generate_password_hash, check_password_hash
 
+users = {
+    "john": generate_password_hash("hello"),
+    "susan": generate_password_hash("hello")
+}
+
+auth = HTTPBasicAuth()
 app = Flask(__name__)
 instances = listdir('instances')
 appService=AppService()
 
+@auth.verify_password
+def verify_password(username, password):
+    if username in users and \
+            check_password_hash(users.get(username), password):
+        return username
+
 #Human interface
-@app.route('/home')
+@app.route('/index')
+@auth.login_required
 def home():
     inst_link = ''
     for f in instances:
         inst = os.path.splitext(f)[0]
         inst_link += '<a href=\'api/' + inst + '\'>' + inst + '<a></br>'
-    return "Welcome to Ddist! Available instances: </br>" + inst_link
+    return f"Hello {auth.current_user()}, Welcome to Ddist! Available instances: </br>" + inst_link
 
-#Computer interface
+#Computer interface --> get endpoints
 @app.route('/')
 def index():
     endpoint_dict = {"endpoints":[]}
@@ -35,16 +50,33 @@ def get_data(instance_name):
 
 #create new data
 @app.route('/api/<instance_name>', methods=['POST'])
+@auth.login_required
 def create_data(instance_name):
+    if not request.json:
+        abort(400)
     new_data = request.get_json()
     return appService.create_data(instance_name,new_data)
 
 #delete data
 @app.route(f'/api/<instance_name>', methods=['DELETE'])
+@auth.login_required
 def delete_data(instance_name):
     return appService.delete_data(instance_name)
 
 #TODO: Append data
 
 #TODO: Update data
+
+#append data
+#@app.route(f'/api/<instance_name>', methods=['PUT'])
+#def update_data(instance_name):
+#    request_data = request.get_json()
+#    return appService.update_data(instance_name,request_data['task'])
+
+
+
+
+#for i in instances:
+
+  #  endpoint_dict[i] = AppEndpoint(i)
 

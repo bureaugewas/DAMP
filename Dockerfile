@@ -5,6 +5,8 @@ WORKDIR /opt/app
 COPY . .
 
 RUN pip install --no-cache-dir -r requirements-prod.txt
+pip install flask
+pip install flask-httpauth
 
 EXPOSE 5000
 
