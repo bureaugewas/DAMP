@@ -38,7 +38,10 @@ def home():
         inst = os.path.splitext(f)[0]
         inst_link += '<a href=\'api/' + inst + '\'>' + inst + '<a></br>'
 
-    return f"Hello {auth.current_user()}, Welcome to Ddist! Available instances: </br>" + inst_link + logout
+    f = open('html/upload.html','r')
+    upload_template = f.read()
+
+    return f"Hello {auth.current_user()}, Welcome to Ddist! Available instances: </br>" + inst_link + "</br>" + upload_template + logout
 
 #Computer interface --> get endpoints
 @app.route('/')
@@ -78,6 +81,16 @@ def delete_data(instance_name):
 def append_data(instance_name):
     request_json = request.get_json()
     return appService.append_data(instance_name,request_json)
+
+
+#Upload_data
+@app.route('/uploader', methods = ['GET', 'POST'])
+def upload_file():
+   if request.method == 'POST':
+      f = request.files['file']
+      f.save(f'instances/{f.filename}')
+      url_home = '<br/><a href=\'/home\'>Return home<a></br>'
+      return 'file uploaded successfully' + url_home
 
 #logout user
 @app.route('/logout')
