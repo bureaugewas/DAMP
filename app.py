@@ -1,15 +1,15 @@
 import os
 from os import listdir
-from flask import Flask, request, url_for
+from flask import Flask, request, url_for, redirect
 from app_service import AppService
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
+from flask import Flask, session
 
+#example users
 users = {
-    "john": generate_password_hash("hello"),
-    "susan": generate_password_hash("hello"),
-    "michiel": generate_password_hash("test123")
+    "test_user": generate_password_hash("test_password")
 }
 
 with open(f'users/users.json', 'w') as f:
@@ -17,9 +17,9 @@ with open(f'users/users.json', 'w') as f:
 
 auth = HTTPBasicAuth()
 app = Flask(__name__)
-instances = listdir('instances')
-appService=AppService()
+appService = AppService()
 
+#Verify password
 @auth.verify_password
 def verify_password(username, password):
     open_file = open(f'users/users.json')
@@ -29,21 +29,23 @@ def verify_password(username, password):
         return username
 
 #Human interface
-@app.route('/index')
+@app.route('/home')
 @auth.login_required
 def home():
     inst_link = ''
-    for f in instances:
+    logout = '<br/><a href=\'/logout\'>Logout user<a></br>'
+    for f in listdir('instances'):
         inst = os.path.splitext(f)[0]
         inst_link += '<a href=\'api/' + inst + '\'>' + inst + '<a></br>'
-    return f"Hello {auth.current_user()}, Welcome to Ddist! Available instances: </br>" + inst_link
+
+    return f"Hello {auth.current_user()}, Welcome to Ddist! Available instances: </br>" + inst_link + logout
 
 #Computer interface --> get endpoints
 @app.route('/')
 def index():
     endpoint_dict = {"endpoints":[]}
     name = ''
-    for f in instances:
+    for f in listdir('instances'):
         endpoint = {}
         name = os.path.splitext(f)[0]
         endpoint[name] = 'api/' + name
@@ -76,3 +78,18 @@ def delete_data(instance_name):
 def append_data(instance_name):
     request_json = request.get_json()
     return appService.append_data(instance_name,request_json)
+
+#logout user
+@app.route('/logout')
+@auth.login_required
+def logout():
+    #session.pop(auth.username(),None)
+    url_home = '<br/><a href=\'/home\'>Return home<a></br>'
+    return "Logout" + url_home, 401
+
+if __name__ == "__main__":
+    app.secret_key = 'test123'
+    app.config['SESSION_TYPE'] = 'filesystem'
+
+    app.debug = True
+    app.run()
