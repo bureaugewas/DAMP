@@ -5,6 +5,7 @@ response = requests.get('http://127.0.0.1:5000/')
 print('Get endpoint list:')
 print(response.text)
 
+
 #test create specific endpoint
 response = requests.post("http://127.0.0.1:5000/api/newData",
                          json={"task1":"value1"}
@@ -18,12 +19,17 @@ response = requests.get('http://127.0.0.1:5000/')
 print('Get endpoint list:')
 print(response.text)
 
+
 #test append specific endpoint
 response = requests.put("http://127.0.0.1:5000/api/newData"
                         ,json={"task2":"value2"}
                         ,auth=('test_user', 'test_password'))
 print('Append to endpoint:')
 print(response.text)
+
+#test get endpoint data
+response = requests.get('http://127.0.0.1:5000/api/newData')
+print(response.json())
 
 #test delete specific endpoint
 response = requests.delete("http://127.0.0.1:5000/api/newData"
@@ -36,3 +42,4 @@ print(response)
 response = requests.get('http://127.0.0.1:5000/')
 print('Get endpoint list:')
 print(response.text)
+
