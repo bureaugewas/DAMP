@@ -11,7 +11,8 @@ V1.0 (In progress) The goal of the first implementation is to build a simple Doc
 - Ability to upload a .json file to that instance that can be directly queried over the internet (Done).
 - Ability for the owner of an endpoint instance to POST, PUT or DELETE .json data (Done).
 - Simple User interface for login, logout and uploading files (Done).
-- Docker application that can be run on Umbrel
+- File upload from interface.
+- Docker application that can be run on Umbrel.
 
 Future versions:
 
