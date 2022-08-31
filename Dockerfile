@@ -1,14 +1,10 @@
-FROM python:3.7
+FROM python:3.9
 
 WORKDIR /opt/app
 
 COPY . .
 
-RUN pip install --no-cache-dir -r requirements-prod.txt
-pip install flask
-pip install flask-httpauth
-pip install flask_login
-pip install Flask-Session
+RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 5000
 
