@@ -29,7 +29,7 @@ def verify_password(username, password):
         return username
 
 #Human interface
-@app.route('/home')
+@app.route('/')
 @auth.login_required
 def home():
     inst_link = ''
@@ -44,7 +44,7 @@ def home():
     return f"Hello {auth.current_user()}, Welcome to Ddist! Available instances: </br>" + inst_link + "</br>" + upload_template + logout
 
 #Computer interface --> get endpoints
-@app.route('/')
+@app.route('/meta')
 def index():
     endpoint_dict = {"endpoints":[]}
     name = ''
@@ -89,7 +89,7 @@ def upload_file():
    if request.method == 'POST':
       f = request.files['file']
       f.save(f'instances/{f.filename}')
-      url_home = '<br/><a href=\'/home\'>Return home<a></br>'
+      url_home = '<br/><a href=\'/\'>Return home<a></br>'
       return 'file uploaded successfully' + url_home
 
 #logout user
@@ -97,7 +97,7 @@ def upload_file():
 @auth.login_required
 def logout():
     #session.pop(auth.username(),None)
-    url_home = '<br/><a href=\'/home\'>Return home<a></br>'
+    url_home = '<br/><a href=\'/\'>Return home<a></br>'
     return "Logout" + url_home, 401
 
 if __name__ == "__main__":
@@ -105,4 +105,4 @@ if __name__ == "__main__":
     app.config['SESSION_TYPE'] = 'filesystem'
 
     app.debug = True
-    app.run()
+    app.run('0.0.0.0', 5000, debug=True)
