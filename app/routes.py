@@ -1,47 +1,57 @@
 import os
+import json
+
+from app import app
 from os import listdir
 from flask import Flask, request, url_for, redirect
-from app_service import AppService
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
-import json
 from flask import Flask, session
+from functools import wraps
 
-#example users
-users = {
-    "test_user": generate_password_hash("test_password")
-}
 
-with open(f'users/users.json', 'w') as f:
-    json.dump(users, f)
+def auth_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
 
-auth = HTTPBasicAuth()
-app = Flask(__name__)
-appService = AppService()
+        # Skip if username/password not set
+        ddist_user = os.getenv('DDIST_USER', '')
+        ddist_pass = os.getenv('DDIST_PASS', '')
+        if (not ddist_user or not ddist_pass) or (
+                auth
+                and ddist_user == auth.username
+                and ddist_pass == auth.password):
+            return f(*args, **kwargs)
+        else:
+            return make_response('Not logged in', 401, {
+                'WWW-Authenticate': 'Basic realm="Login Required"'})
 
-#Verify password
+    return decorated
+
+'''#Verify password
 @auth.verify_password
 def verify_password(username, password):
-    open_file = open(f'users/users.json')
+    open_file = open(f'../config/users.json')
     auth_users = json.load(open_file)
     if username in auth_users and \
             check_password_hash(users.get(username), password):
-        return username
+        return username'''
 
 #Human interface
 @app.route('/')
-@auth.login_required
+@auth_required
 def home():
     inst_link = ''
-    logout = '<br/><a href=\'/logout\'>Logout user<a></br>'
+    logout = '<br/><a href=\'/auth/logout\'>Logout user<a></br>'
     for f in listdir('instances'):
         inst = os.path.splitext(f)[0]
         inst_link += '<a href=\'api/' + inst + '\'>' + inst + '<a></br>'
 
-    f = open('html/upload.html','r')
+    f = open(app.config['UPLOAD_PATH'], 'r')
     upload_template = f.read()
 
-    return f"Hello {auth.current_user()}, Welcome to Ddist! Available instances: </br>" + inst_link + "</br>" + upload_template + logout
+    return f"Hello, Welcome to Ddist! Available instances: </br>" + inst_link + "</br>" + upload_template + logout
 
 #Computer interface --> get endpoints
 @app.route('/meta')
@@ -58,30 +68,41 @@ def index():
 #get data
 @app.route('/api/<instance_name>')
 def get_data(instance_name):
-    return appService.get_data(instance_name)
+    open_file = open(f'instances/{instance_name}.json')
+    data = json.load(open_file)
+    dataJSON = json.dumps(data)
+    return dataJSON
 
 #create new data
 @app.route('/api/<instance_name>', methods=['POST'])
-@auth.login_required
+@auth_required
 def create_data(instance_name):
     if not request.json:
         abort(400)
     request_json = request.get_json()
-    return appService.create_data(instance_name,request_json)
+    with open(f'instances/{instance_name}.json', 'w') as f:
+        json.dump(request_json, f)
+    return request_json
 
 #delete data
 @app.route(f'/api/<instance_name>', methods=['DELETE'])
-@auth.login_required
+@auth_required
 def delete_data(instance_name):
-    return appService.delete_data(instance_name)
+    os.remove(f"instances/{instance_name}.json")
+    return f"{instance_name} is removed"
 
 #Append data
 @app.route('/api/<instance_name>', methods=['PUT'])
-@auth.login_required
+@auth_required
 def append_data(instance_name):
     request_json = request.get_json()
-    return appService.append_data(instance_name,request_json)
-
+    open_file = open(f'instances/{instance_name}.json')
+    data = json.load(open_file)
+    for k in request_json.keys():
+        data[k] = request_json[k]
+    with open(f'instances/{instance_name}.json', 'w') as f:
+        json.dump(data, f)
+    return data
 
 #Upload_data
 @app.route('/uploader', methods = ['GET', 'POST'])
@@ -94,7 +115,7 @@ def upload_file():
 
 #logout user
 @app.route('/logout')
-@auth.login_required
+@auth_required
 def logout():
     #session.pop(auth.username(),None)
     url_home = '<br/><a href=\'/\'>Return home<a></br>'
