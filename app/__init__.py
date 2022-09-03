@@ -59,8 +59,6 @@ def create_app(test_config=None):
 
 app = create_app()
 
-from app import routes  # noqa
-
 # Disable logging from imported modules
 logging.config.dictConfig({
     'version': 1,

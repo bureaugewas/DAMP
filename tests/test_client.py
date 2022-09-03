@@ -1,7 +1,21 @@
 import requests
 
+
+response = requests.get('http://127.0.0.1:5000/metadata')
+print(response)
+print(response.json())
+
+#test get endpoint data
+response = requests.get('http://127.0.0.1:5000/api/file_hashes')
+print(response)
+print(response.json())
+
+
+
+
+
 #test get endpoint list function
-response = requests.get('http://127.0.0.1:5000/meta')
+'''response = requests.get('http://127.0.0.1:5000/metadata')
 print(response.text)
 
 
@@ -19,9 +33,7 @@ response = requests.put("http://127.0.0.1:5000/api/newData"
                         ,auth=('test_user', 'test_password'))
 print(response.text)
 
-#test get endpoint data
-response = requests.get('http://127.0.0.1:5000/api/newData')
-print(response.json())
+
 
 #test delete specific endpoint
 response = requests.delete("http://127.0.0.1:5000/api/newData"
@@ -31,3 +43,4 @@ print(response.text)
 
 
 
+'''
