@@ -1,12 +1,11 @@
 import requests
 
-
 response = requests.get('http://127.0.0.1:5000/metadata')
 print(response)
 print(response.json())
 
 #test get endpoint data
-response = requests.get('http://127.0.0.1:5000/api/file_hashes')
+response = requests.get('http://127.0.0.1:5000/api/voorIemand')
 print(response)
 print(response.json())
 

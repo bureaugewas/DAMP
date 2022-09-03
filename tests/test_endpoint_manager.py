@@ -1,5 +1,5 @@
 import pytest
-from data.db import get_db
+from app.db import get_db
 
 
 def test_index(client, auth):
@@ -29,7 +29,7 @@ def test_author_required(app, client, auth):
     # change the post author to another user
     with app.app_context():
         db = get_db()
-        db.execute('UPDATE post SET author_id = 2 WHERE id = 1')
+        db.execute('UPDATE endpoints SET author_id = 2 WHERE id = 1')
         db.commit()
 
     auth.login()
@@ -62,7 +62,7 @@ def test_author_required(app, client, auth):
     # change the post author to another user
     with app.app_context():
         db = get_db()
-        db.execute('UPDATE post SET author_id = 2 WHERE id = 1')
+        db.execute('UPDATE endpoints SET author_id = 2 WHERE id = 1')
         db.commit()
 
     auth.login()
@@ -88,5 +88,5 @@ def test_delete(client, auth, app):
 
     with app.app_context():
         db = get_db()
-        post = db.execute('SELECT * FROM post WHERE id = 1').fetchone()
+        post = db.execute('SELECT * FROM endpoints WHERE id = 1').fetchone()
         assert post is None

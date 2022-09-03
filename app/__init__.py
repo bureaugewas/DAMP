@@ -1,18 +1,11 @@
 import os
 import json
-import logging.config
 
-from os import listdir
-from flask import Flask, request, url_for, redirect
-from flask_httpauth import HTTPBasicAuth
+from flask import (
+    Flask, session, Blueprint, flash, g, redirect, render_template, request, url_for
+)
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Flask, session
 from werkzeug.middleware.proxy_fix import ProxyFix
-
-#example users
-users = {
-    "test_user": generate_password_hash("test_password")
-}
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True,
@@ -58,9 +51,3 @@ def create_app(test_config=None):
     return app
 
 app = create_app()
-
-# Disable logging from imported modules
-logging.config.dictConfig({
-    'version': 1,
-    'disable_existing_loggers': True,
-})
