@@ -16,7 +16,7 @@ def test_index(client, auth):
     assert b'href="/1/update"' in response.data
 
 @pytest.mark.parametrize('path', (
-    '/create',
+    '/upload',
     '/1/update',
     '/1/delete',
 ))

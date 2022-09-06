@@ -12,7 +12,13 @@
     <article class="endpoint">
       <header>
         <div>
-          <h1>{{ endpoint['name'] }} ({{ endpoint['access'] }})</h1>
+          <h1>
+            {% if endpoint['status'] == "Active" %}
+              <span style="height: 12px; width: 12px; background-color: #06c91d; border-radius: 50%; display: inline-block;" class="dot"></span>
+            {% else %}
+              <span style="height: 12px; width: 12px; background-color: #bbb; border-radius: 50%; display: inline-block;" class="dot"></span>
+            {% endif %}
+            <a href="{{ endpoint['endpoint_base'] }}">{{ endpoint['endpoint_base'] }}</a> ({{ endpoint['access'] }})</h1>
           <div class="about">by {{ endpoint['username'] }} on {{ endpoint['created'].strftime('%Y-%m-%d') }}</div>
         </div>
         {% if g.user['id'] == endpoint['author_id'] %}
