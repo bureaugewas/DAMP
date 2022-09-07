@@ -62,7 +62,7 @@ def upload():
 
 def fetch_data(id, check_author=True):
     cursor = get_db().execute(
-        'SELECT e.id, name, endpoint_base, data, access, status, created, author_id, username'
+        'SELECT e.id, name, endpoint_base, data, access, status, created, author_id'
         ' FROM endpoints e JOIN user u ON e.author_id = u.id'
         ' WHERE e.id = ?',
         (id,)
@@ -122,8 +122,8 @@ def api(name):
     endpoint_base = format_endpoint(name)
     if request.method == 'GET':
         fetch_id = get_db().execute(
-            'SELECT e.id'
-            ' FROM endpoints e JOIN user u ON e.author_id = u.id'
+            'SELECT id'
+            ' FROM endpoints'
             ' WHERE endpoint_base = ?'
             ' AND STATUS = \'Active\''
             ' AND ACCESS = \'Public\'',
@@ -132,21 +132,22 @@ def api(name):
         close_db()
 
     elif request.method == 'POST':
-        abort(404, f"Private endpoint querying not enabled yet.")
+        client_id = request.form['client_id']
+        client_token = request.form['client_token']
         fetch_id = get_db().execute(
             'SELECT e.id'
-            ' FROM endpoints e JOIN user u ON e.author_id = u.id'
+            ' FROM endpoints e LEFT JOIN client_access c ON e.id = c.endpoint_access_id'
             ' WHERE endpoint_base = ?'
             ' AND STATUS = \'Active\''
             ' AND (ACCESS = \'Public\''
-            ' OR (ACCESS = \'Private\' AND c.client_id = ? AND c.client_token = ?))'
-            (endpoint_base, g.user['id'],)
+            ' OR (ACCESS = \'Private\' AND c.client_id = ? AND c.client_token = ?))',
+            (endpoint_base, client_id, client_token,)
         ).fetchone()
         close_db()
 
     # TODO: Add private endpoint querying for whitelisted tokens
     if fetch_id is None:
-        abort(404, f"Endpoint {endpoint_base} doesn\'t exist or set to private.")
+        abort(404, f"Endpoint {endpoint_base} doesn\'t exist or is set to private.")
     else:
         cursor = fetch_data(fetch_id['id'], check_author=False)
         return cursor['data']
