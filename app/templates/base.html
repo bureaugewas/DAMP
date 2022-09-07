@@ -6,6 +6,8 @@
   <ul>
     {% if g.user %}
       <li><span>{{ g.user['username'] }}</span>
+      <li><a href="{{ url_for('endpoint_manager.index') }}">Home</a>
+      <li><a href="{{ url_for('auth.client_access') }}">Client Access</a>
       <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
     {% else %}
       <li><a href="{{ url_for('auth.register') }}">Register</a>

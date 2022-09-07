@@ -50,7 +50,7 @@ def upload():
                 db.execute(
                     'INSERT INTO endpoints (name, endpoint_base, data, access, status, author_id)'
                     ' VALUES (?, ?, ?, ?, ?, ?)',
-                    (name, endpoint_base, data, access, status, g.user['id'])
+                    (name, endpoint_base, data, access, status, g.user['id'],)
                 )
                 db.commit()
             except:
@@ -122,17 +122,31 @@ def api(name):
     endpoint_base = format_endpoint(name)
     if request.method == 'GET':
         fetch_id = get_db().execute(
-            'SELECT id FROM endpoints WHERE endpoint_base = ? AND ACCESS = \'Public\' AND STATUS = \'Active\'',
+            'SELECT e.id'
+            ' FROM endpoints e JOIN user u ON e.author_id = u.id'
+            ' WHERE endpoint_base = ?'
+            ' AND STATUS = \'Active\''
+            ' AND ACCESS = \'Public\'',
             (endpoint_base,)
         ).fetchone()
         close_db()
 
     elif request.method == 'POST':
         abort(404, f"Private endpoint querying not enabled yet.")
+        fetch_id = get_db().execute(
+            'SELECT e.id'
+            ' FROM endpoints e JOIN user u ON e.author_id = u.id'
+            ' WHERE endpoint_base = ?'
+            ' AND STATUS = \'Active\''
+            ' AND (ACCESS = \'Public\''
+            ' OR (ACCESS = \'Private\' AND c.client_id = ? AND c.client_token = ?))'
+            (endpoint_base, g.user['id'],)
+        ).fetchone()
+        close_db()
 
     # TODO: Add private endpoint querying for whitelisted tokens
     if fetch_id is None:
-        abort(404, f"Endpoint {endpoint_base} doesn\'t exist.")
+        abort(404, f"Endpoint {endpoint_base} doesn\'t exist or set to private.")
     else:
         cursor = fetch_data(fetch_id['id'], check_author=False)
         return cursor['data']

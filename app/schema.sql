@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS endpoints;
+DROP TABLE IF EXISTS client_access;
 
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,4 +19,18 @@ CREATE TABLE endpoints (
   tags TEXT,
   data TEXT NOT NULL,
   FOREIGN KEY (author_id) REFERENCES user (id)
+);
+
+CREATE TABLE client_access (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  author_id INTEGER NOT NULL,
+  client_id TEXT UNIQUE NOT NULL,
+  client_token TEXT UNIQUE NOT NULL,
+  endpoint_access_id INTEGER NOT NULL,
+  date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  date_expiry TIMESTAMP NOT NULL ,
+  daily_rate_limit INTEGER DEFAULT 99999,
+  active TEXT NOT NULL DEFAULT 'TRUE',
+  FOREIGN KEY (author_id) REFERENCES user (id),
+  FOREIGN KEY (endpoint_access_id) REFERENCES endpoints (id)
 );

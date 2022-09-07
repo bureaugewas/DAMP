@@ -5,9 +5,9 @@ print(response)
 print(response.json())
 
 #test get endpoint data
-response = requests.get('http://127.0.0.1:5000/api/voorIemand')
+response = requests.get('http://127.0.0.1:5000/api/test')
 print(response)
-print(response.json())
+print(response.text)
 
 
 
