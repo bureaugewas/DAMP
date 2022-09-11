@@ -1,6 +1,7 @@
 import requests
 import os
 
+
 #test get available endpoints
 response = requests.get('http://127.0.0.1:5000/metadata')
 print(response)
@@ -12,8 +13,8 @@ print(response)
 print(response.text)
 
 #test post authorization for private endpoint
-client_id = os.environ.get("CLIENT_ID","7e40577d91897d6b836cebd08129a4f6")
-client_secret = os.environ.get("CLIENT_SECRET","bd39e4dd67df0f6e5817f105e369743efcbf0da45a86d60a8805ce432c30fffa")
+client_id = os.environ.get("CLIENT_ID","6b6d1c8943dfa4266161dffb9c1d3a4e")
+client_secret = os.environ.get("CLIENT_SECRET","ee88383382beb1adc7d64503ced57cda742a0303d5e1b97450266614a7cb4bf8")
 headers = {'Content-type': 'application/json'}
 
 response = requests.post('http://127.0.0.1:5000/api/private',

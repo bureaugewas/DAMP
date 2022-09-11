@@ -18,6 +18,7 @@ CREATE TABLE endpoints (
   endpoint_base TEXT UNIQUE NOT NULL,
   tags TEXT,
   data TEXT NOT NULL,
+  valid_json BOOL NOT NULL,
   FOREIGN KEY (author_id) REFERENCES user (id)
 );
 

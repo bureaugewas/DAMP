@@ -9,14 +9,25 @@
     <label for="name">Name</label>
     <input name="name" id="name"
       value="{{ request.form['name'] or endpoint['name'] }}" required>
+
     <label for="data">Data</label>
     <textarea name="data" id="data">{{ request.form['data'] or endpoint['data'] }}</textarea>
-    <label for="access">Make public or private endpoint?</label>
+
+    <label for="json_validation">JSON validation</label>
+    {% if endpoint['valid_json'] == 1 %}
+    <input type="checkbox" id="json_validation" name="json_validation" value="1" checked>
+    {% else %}
+    <input type='checkbox' id="json_validation" name='json_validation' value="1" >
+    {% endif %}
+    <input type='hidden' value='0' name='json_validation'>
+
+    <label for="access">Set privacy level</label>
     <select name="access" id="access" required>
       <option value="{{ request.form['access'] or endpoint['access'] }}" selected hidden>{{ endpoint['access'] }}</option>
       <option value="Public">Public</option>
       <option value="Private">Private</option>
     </select>
+
     <label for="status">Set status</label>
     <select name="status" id="status" required>
       <option value="{{ request.form['status'] or endpoint['status'] }}" selected hidden>{{ endpoint['status'] }}</option>

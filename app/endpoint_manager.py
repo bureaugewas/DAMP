@@ -16,6 +16,13 @@ def format_endpoint(name):
     endpoint = '/api/' + name.lower().replace(' ', '_')
     return endpoint
 
+def validate_json(jsonData):
+    try:
+        json.loads(jsonData)
+    except ValueError as err:
+        return False
+    return True
+
 @bp.route('/')
 @login_required
 def index():
@@ -39,7 +46,11 @@ def upload():
         data = request.form['data']
         access = request.form['access']
         status = request.form['status']
+        json_validation = request.form['json_validation']
         error = None
+
+        if json_validation == '1' and not validate_json(data):
+            error = 'Invalid json.'
 
         if not name:
             error = 'Name is required.'
@@ -50,9 +61,9 @@ def upload():
             db = get_db()
             try:
                 db.execute(
-                    'INSERT INTO endpoints (name, endpoint_base, data, access, status, author_id)'
-                    ' VALUES (?, ?, ?, ?, ?, ?)',
-                    (name, endpoint_base, data, access, status, g.user['id'],)
+                    'INSERT INTO endpoints (name, endpoint_base, data, access, status, valid_json, author_id)'
+                    ' VALUES (?, ?, ?, ?, ?, ?, ?)',
+                    (name, endpoint_base, data, access, status, json_validation, g.user['id'],)
                 )
                 db.commit()
             except:
@@ -64,7 +75,7 @@ def upload():
 
 def fetch_data(id, check_author=True):
     cursor = get_db().execute(
-        'SELECT e.id, name, endpoint_base, data, access, status, created, author_id'
+        'SELECT e.id, name, endpoint_base, data, access, status, valid_json, created, author_id'
         ' FROM endpoints e JOIN user u ON e.author_id = u.id'
         ' WHERE e.id = ?',
         (id,)
@@ -91,7 +102,11 @@ def update(id):
         data = request.form['data']
         access = request.form['access']
         status = request.form['status']
+        json_validation = request.form['json_validation']
         error = None
+
+        if json_validation == '1' and not validate_json(data):
+            error = 'Invalid json.'
 
         if not name:
             error = 'Name is required.'
@@ -101,9 +116,9 @@ def update(id):
         else:
             db = get_db()
             db.execute(
-                'UPDATE endpoints SET name = ?, access = ?, status = ?, endpoint_base = ?, data = ?'
+                'UPDATE endpoints SET name = ?, access = ?, status = ?, endpoint_base = ?, data = ?, valid_json = ?'
                 ' WHERE id = ?',
-                (name, access, status, endpoint_base, data, id,)
+                (name, access, status, endpoint_base, data, json_validation, id, )
             )
             db.commit()
             return redirect(url_for('endpoint_manager.index'))
