@@ -2,3 +2,5 @@ flask
 python-dotenv
 flask-httpauth
 Flask-Session
+jwt
+basicauth

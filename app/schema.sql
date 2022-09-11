@@ -25,7 +25,7 @@ CREATE TABLE client_access (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   author_id INTEGER NOT NULL,
   client_id TEXT UNIQUE NOT NULL,
-  client_token TEXT UNIQUE NOT NULL,
+  client_secret TEXT UNIQUE NOT NULL,
   endpoint_access_id INTEGER NOT NULL,
   date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   date_expiry TIMESTAMP NOT NULL ,

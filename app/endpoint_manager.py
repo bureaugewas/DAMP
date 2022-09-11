@@ -1,4 +1,6 @@
 import json
+import basicauth
+from werkzeug.security import check_password_hash
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
@@ -117,9 +119,11 @@ def delete(id):
     db.commit()
     return redirect(url_for('endpoint_manager.index'))
 
-@bp.route('/api/<name>', methods=('GET', 'POST'))
+@bp.route('/api/<name>', methods=('GET','POST',))
 def api(name):
     endpoint_base = format_endpoint(name)
+    error = None
+
     if request.method == 'GET':
         fetch_id = get_db().execute(
             'SELECT id'
@@ -131,26 +135,37 @@ def api(name):
         ).fetchone()
         close_db()
 
+        if fetch_id is None:
+            error = f'Endpoint "{endpoint_base}" not available or set to private.'
+
     elif request.method == 'POST':
-        client_id = request.form['client_id']
-        client_token = request.form['client_token']
+        authorization = request.headers.get('Authorization')
+        if authorization is not None and "Basic " in authorization:
+            client_id, client_secret = basicauth.decode(authorization)
+        else:
+            error = 'Please provide a client id and secret.'
+
         fetch_id = get_db().execute(
-            'SELECT e.id'
+            'SELECT e.id, client_secret'
             ' FROM endpoints e LEFT JOIN client_access c ON e.id = c.endpoint_access_id'
             ' WHERE endpoint_base = ?'
             ' AND STATUS = \'Active\''
             ' AND (ACCESS = \'Public\''
-            ' OR (ACCESS = \'Private\' AND c.client_id = ? AND c.client_token = ?))',
-            (endpoint_base, client_id, client_token,)
+            ' OR (ACCESS = \'Private\' AND c.client_id = ?))',
+            (endpoint_base, client_id,)
         ).fetchone()
         close_db()
 
-    # TODO: Add private endpoint querying for whitelisted tokens
-    if fetch_id is None:
-        abort(404, f"Endpoint {endpoint_base} doesn\'t exist or is set to private.")
-    else:
+        if fetch_id is None:
+            error = f'Endpoint {endpoint_base} not available or set to private.'
+        elif not check_password_hash(fetch_id['client_secret'], client_secret):
+            error = 'Client not authorised.'
+
+    if error is None:
         cursor = fetch_data(fetch_id['id'], check_author=False)
         return cursor['data']
+    else:
+        abort(400, error)
 
 @bp.route('/metadata', methods=('GET',))
 def metadata():

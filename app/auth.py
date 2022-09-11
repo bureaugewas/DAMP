@@ -2,7 +2,9 @@ import functools
 import os
 import secrets
 import datetime
+import jwt
 from datetime import timedelta, date
+
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -112,14 +114,14 @@ def client_access():
 
     if request.method == 'POST' and request.form['submit'] == 'Generate':
         client_id = secrets.token_hex(16)
-        client_token = secrets.token_hex(32)
+        client_secret = secrets.token_hex(32)
         endpoint_access_id = request.form['endpoint_access_id']
         access_limit = request.form['access_limit']
         daily_rate_limit = request.form['daily_rate_limit']
         db = get_db()
         error = None
 
-        if not client_id and client_token:
+        if not client_id and client_secret:
             error = 'Error during generation of client id or client token'
         if not endpoint_access_id:
             error = 'Specifying endpoint is required.'
@@ -134,16 +136,16 @@ def client_access():
         if error is None:
             try:
                 db.execute(
-                    "INSERT INTO client_access (author_id, client_id, client_token, endpoint_access_id,date_created, date_expiry, daily_rate_limit)"
+                    "INSERT INTO client_access (author_id, client_id, client_secret, endpoint_access_id,date_created, date_expiry, daily_rate_limit)"
                     " VALUES (?, ?, ?, ?, ?, ?, ?)",
-                    (g.user['id'], client_id, generate_password_hash(client_token),endpoint_access_id,date_created,date_expiry,daily_rate_limit),
+                    (g.user['id'], client_id, generate_password_hash(client_secret),endpoint_access_id,date_created,date_expiry,daily_rate_limit),
                 )
                 db.commit()
             except db.IntegrityError:
                 error = f"Database error, try again"
             else:
                 flash('Client id: ' + client_id)
-                flash('Client token: ' + client_token)
+                flash('Client token: ' + client_secret)
                 return redirect(url_for("auth.client_access"))
 
         flash(error)
@@ -157,3 +159,4 @@ def client_access():
         return redirect(url_for("auth.client_access"))
 
     return render_template('auth/client_access.html', endpoints=cursor_generate, tokens=cursor_delete)
+
