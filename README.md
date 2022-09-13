@@ -1,4 +1,5 @@
 # Decentralised Data Interface System
+(Note: Development of latest version: https://github.com/bureaugewas/Ddist/tree/Ddist_V1.1)
 
 Ddist is a Node Based Decentralised Data Interfacing Platform. It's an app for quickly spinning up and hosting Application Computer Interfaces (or APIs).
 This project is very much in progress and not for profit. Help is greatly appreciated.
