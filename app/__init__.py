@@ -1,6 +1,9 @@
 import os
 import json
 
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
 from flask import (
     Flask, session, Blueprint, flash, g, redirect, render_template, request, url_for
 )
@@ -16,6 +19,13 @@ def create_app(test_config=None):
             SECRET_KEY='dev',
             DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
         )
+
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
+    Limiter(
+        app,
+        key_func=get_remote_address,
+        default_limits=["200/day", "50/hour"]  # this is default limit set for app
+    )
 
     if test_config is None:
         # load the instance config, if it exists, when not testing

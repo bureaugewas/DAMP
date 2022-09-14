@@ -19,6 +19,7 @@ CREATE TABLE endpoints (
   tags TEXT,
   data TEXT NOT NULL,
   valid_json BOOL NOT NULL,
+  daily_rate_limit INTEGER DEFAULT 200,
   FOREIGN KEY (author_id) REFERENCES user (id)
 );
 
@@ -30,7 +31,6 @@ CREATE TABLE client_access (
   endpoint_access_id INTEGER NOT NULL,
   date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   date_expiry TIMESTAMP NOT NULL ,
-  daily_rate_limit INTEGER DEFAULT 99999,
   active TEXT NOT NULL DEFAULT 'TRUE',
   FOREIGN KEY (author_id) REFERENCES user (id),
   FOREIGN KEY (endpoint_access_id) REFERENCES endpoints (id)

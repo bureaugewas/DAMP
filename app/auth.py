@@ -3,11 +3,11 @@ import os
 import secrets
 import datetime
 import jwt
+
 from datetime import timedelta, date
 
-
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -105,7 +105,7 @@ def client_access():
     close_db()
 
     cursor_delete = get_db().execute(
-        'SELECT c.id as token_id, client_id, endpoint_base,  c.daily_rate_limit, date(c.date_created) as date_created,'
+        'SELECT c.id as token_id, client_id, endpoint_base, date(c.date_created) as date_created,'
         'date(c.date_expiry) as date_expiry'
         ' FROM endpoints e LEFT JOIN client_access c ON e.id = c.endpoint_access_id',
         ()
@@ -117,7 +117,6 @@ def client_access():
         client_secret = secrets.token_hex(32)
         endpoint_access_id = request.form['endpoint_access_id']
         access_limit = request.form['access_limit']
-        daily_rate_limit = request.form['daily_rate_limit']
         db = get_db()
         error = None
 
@@ -127,8 +126,6 @@ def client_access():
             error = 'Specifying endpoint is required.'
         if not access_limit or access_limit == 'default' or access_limit == '':
             access_limit = 99999
-        if not daily_rate_limit or daily_rate_limit == 'default' or daily_rate_limit == '':
-            daily_rate_limit = 99999
 
         date_created = date.today()
         date_expiry = date_created + datetime.timedelta(days=int(access_limit))
@@ -136,9 +133,9 @@ def client_access():
         if error is None:
             try:
                 db.execute(
-                    "INSERT INTO client_access (author_id, client_id, client_secret, endpoint_access_id,date_created, date_expiry, daily_rate_limit)"
-                    " VALUES (?, ?, ?, ?, ?, ?, ?)",
-                    (g.user['id'], client_id, generate_password_hash(client_secret),endpoint_access_id,date_created,date_expiry,daily_rate_limit),
+                    "INSERT INTO client_access (author_id, client_id, client_secret, endpoint_access_id,date_created, date_expiry)"
+                    " VALUES (?, ?, ?, ?, ?, ?)",
+                    (g.user['id'], client_id, generate_password_hash(client_secret),endpoint_access_id,date_created,date_expiry),
                 )
                 db.commit()
             except db.IntegrityError:

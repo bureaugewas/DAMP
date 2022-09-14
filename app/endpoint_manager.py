@@ -1,11 +1,13 @@
 import json
 import basicauth
-from werkzeug.security import check_password_hash
 
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
 )
 from werkzeug.exceptions import abort
+from werkzeug.security import check_password_hash
 
 from app.auth import login_required
 from app.db import get_db, close_db
@@ -47,6 +49,7 @@ def upload():
         access = request.form['access']
         status = request.form['status']
         json_validation = request.form['json_validation']
+        daily_rate_limit = request.form['daily_rate_limit']
         error = None
 
         if json_validation == '1' and not validate_json(data):
@@ -61,9 +64,9 @@ def upload():
             db = get_db()
             try:
                 db.execute(
-                    'INSERT INTO endpoints (name, endpoint_base, data, access, status, valid_json, author_id)'
-                    ' VALUES (?, ?, ?, ?, ?, ?, ?)',
-                    (name, endpoint_base, data, access, status, json_validation, g.user['id'],)
+                    'INSERT INTO endpoints (name, endpoint_base, data, access, status, valid_json, author_id, daily_rate_limit)'
+                    ' VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                    (name, endpoint_base, data, access, status, json_validation, g.user['id'], daily_rate_limit)
                 )
                 db.commit()
             except:
@@ -75,7 +78,7 @@ def upload():
 
 def fetch_data(id, check_author=True):
     cursor = get_db().execute(
-        'SELECT e.id, name, endpoint_base, data, access, status, valid_json, created, author_id'
+        'SELECT e.id, name, endpoint_base, data, access, status, valid_json, created, author_id, daily_rate_limit'
         ' FROM endpoints e JOIN user u ON e.author_id = u.id'
         ' WHERE e.id = ?',
         (id,)
@@ -103,6 +106,7 @@ def update(id):
         access = request.form['access']
         status = request.form['status']
         json_validation = request.form['json_validation']
+        daily_rate_limit = request.form['daily_rate_limit'] # Not operational
         error = None
 
         if json_validation == '1' and not validate_json(data):
@@ -116,9 +120,9 @@ def update(id):
         else:
             db = get_db()
             db.execute(
-                'UPDATE endpoints SET name = ?, access = ?, status = ?, endpoint_base = ?, data = ?, valid_json = ?'
+                'UPDATE endpoints SET name = ?, access = ?, status = ?, endpoint_base = ?, data = ?, valid_json = ?, daily_rate_limit = ?'
                 ' WHERE id = ?',
-                (name, access, status, endpoint_base, data, json_validation, id, )
+                (name, access, status, endpoint_base, data, json_validation, daily_rate_limit, id, )
             )
             db.commit()
             return redirect(url_for('endpoint_manager.index'))
@@ -165,6 +169,7 @@ def api(name):
             ' FROM endpoints e LEFT JOIN client_access c ON e.id = c.endpoint_access_id'
             ' WHERE endpoint_base = ?'
             ' AND STATUS = \'Active\''
+            ' AND CURRENT_DATE < date_expiry'
             ' AND (ACCESS = \'Public\''
             ' OR (ACCESS = \'Private\' AND c.client_id = ?))',
             (endpoint_base, client_id,)
@@ -194,4 +199,3 @@ def metadata():
         endpoints[endpoint['name']] = endpoint['endpoint_base']
 
     return endpoints
-

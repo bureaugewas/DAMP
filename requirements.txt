@@ -1,6 +1,7 @@
 flask
 python-dotenv
 flask-httpauth
+flask_limiter
 Flask-Session
 jwt
 basicauth

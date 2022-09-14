@@ -27,8 +27,11 @@
     <select name="status" id="status" required>
       <option value="Active">Active</option>
       <option value="Inactive">Inactive</option>
-
     </select>
+
+    <label for="daily_rate_limit">Set daily rate limit (Not functional yet default = 200)</label>
+    <input type="number" name="daily_rate_limit" id="daily_rate_limit" min="0" step="1">
+
     <input type="submit" value="Save">
   </form>
 {% endblock %}

@@ -13,12 +13,8 @@
       {% endfor %}
     </select>
 
-
-    <label for="access_limit">Set max access limit (default = 99999)</label>
+    <label for="access_limit">Days access (default = 99999)</label>
     <input type="number" name="access_limit" id="access_limit" min="0" step="1">
-
-    <label for="daily_rate_limit">Set daily rate limit (default = 99999)</label>
-    <input type="number" name="daily_rate_limit" id="daily_rate_limit" min="0" step="1">
 
     <input type="submit" name="submit" value="Generate">
   </form>
@@ -29,7 +25,7 @@
       <option value="" selected disabled></option>
       {% for token in tokens %}
         {% if token['token_id'] != "NULL" %}
-          <option value="{{ token['client_id'] }}">{{ token['endpoint_base'] }} - Client id: {{ token['client_id'] }} - Expiry: {{ token['date_expiry'] }} - Rate limit: {{ token['daily_rate_limit'] }}</option>
+          <option value="{{ token['client_id'] }}">{{ token['endpoint_base'] }} - Client id: {{ token['client_id'] }} - Expiry: {{ token['date_expiry'] }}</option>
         {% endif %}
       {% endfor %}
     </select>
