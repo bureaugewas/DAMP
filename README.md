@@ -1,6 +1,9 @@
-# Decentralised Data Interface System
+# Decentralised Data Interface System V1.0
+(Note: Development of latest version V1.1: https://github.com/bureaugewas/Ddist/tree/Ddist_V1.1)
 
-Ddist is a Docker based Umbrel application for quickly spinning up and hosting Application Computer Interfaces (or APIs).
+
+
+Ddist is a Node Based Decentralised Data Interfacing Platform. It's an app for quickly spinning up and hosting Application Computer Interfaces (or APIs).
 This project is very much in progress and not for profit. Help is greatly appreciated.
 
 
@@ -13,8 +16,8 @@ V1.0 Features:
 - File upload from interface.
 
 How to use Ddist:
-1. Install Docker
-2. Open the project in Pycharm
+1. Download and install Docker from https://www.docker.com/
+2. Clone the project and open it in your favorite IDE
 3. Build the Docker Image (e.g. from your Pycharm terminal):
 ```
 docker build -t ddist-api .
