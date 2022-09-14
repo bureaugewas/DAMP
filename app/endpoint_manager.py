@@ -210,7 +210,7 @@ def api_fetch(name):
         cursor = fetch_data(fetch_id['id'], check_author=False)
         return cursor['data']
     else:
-        abort(400, error)
+        return error, 400
 
 
 @bp.route('/api/upload', methods=('POST',))
@@ -239,45 +239,51 @@ def api_upload():
 
 
     # Check response for values
-
     if not 'name' in request.get_json():
         error = 'Missing endpoint name.'
     else:
         name = request.get_json()['name']
         endpoint_base = format_endpoint(name)
 
+    if not 'json_validation' in request.get_json():
+        json_validation = 1
+    elif request.get_json()['json_validation'] in (0,1):
+        json_validation = request.get_json()['json_validation']
+    else:
+        return 'ValueError: set json_validation to 0 or 1', 400
+
     if not 'data' in request.get_json():
         error = 'Missing data'
     else:
         data = request.get_json()['data']
+        if json_validation == 1 and not validate_json(json.dumps(data)):
+            error = 'Invalid json.'
+        else:
+            data = json.dumps(data, indent=3)
 
     if not 'availability' in request.get_json():
         availability = 'Public'
-    else:
+    elif request.get_json()['availability'] in ('Public','Private'):
         availability = request.get_json()['availability']
+    else:
+        return 'ValueError: set availability to \'Public\' or \'Private\'', 400
 
     if not 'status' in request.get_json():
         status = 'Active'
-    else:
+    elif request.get_json()['status'] in ('Active', 'Inactive'):
         status = request.get_json()['status']
-
-    if not 'json_validation' in request.get_json():
-        json_validation = 1
     else:
-        json_validation = request.get_json()['json_validation']
+        return 'ValueError: set status to \'Active\' or \'Inactive\'', 400
 
     if not 'daily_rate_limit' in request.get_json():
         daily_rate_limit = 200
-    else:
+    elif type(request.get_json()['daily_rate_limit']) is int:
         daily_rate_limit = request.get_json()['daily_rate_limit']
-
-    if json_validation == 1 and not validate_json(json.dumps(data)):
-        error = 'Invalid json.'
     else:
-        data = json.dumps(data, indent = 3)
+        return 'ValueError: set daily_rate_limit integer value', 400
 
     if error is not None:
-        abort(400, error)
+        return error, 400
     else:
         try:
             db = get_db()
@@ -288,24 +294,164 @@ def api_upload():
             )
             db.commit()
             close_db()
-            return f'Successfully created endpoint: {endpoint_base}.'
+            return f'Successfully created endpoint: {endpoint_base}'
         except db.IntegrityError as err:
-            return 'Endpoint already exists.'
+            return 'Error: Endpoint already exists', 400
 
 
 
-@bp.route('/api/update/<name>', methods=('PUT',))
-def api_update(name):
-    if error is None:
-        return
+@bp.route('/api/update', methods=('PUT',))
+def api_update():
+    authorization = request.headers.get('Authorization')
+    error = None
+
+    if authorization is not None and "Basic " in authorization:
+        client_id, client_secret = basicauth.decode(authorization)
     else:
-        abort(400, error)
+        error = 'Please provide a client id and secret.'
 
+    access = get_db().execute(
+        'SELECT id, author_id, client_secret FROM client_access'
+        ' WHERE client_id = ?'
+        ' AND CURRENT_DATE < DATE_EXPIRY'
+        ' AND write_access = \'TRUE\'',
+        (client_id,)
+    ).fetchone()
+    close_db()
 
-@bp.route('/api/delete/<name>', methods=('DELETE',))
-def api_delete(name):
-    if error is None:
-        return
+    if access is None:
+        error = 'Client not found.'
+    elif not check_password_hash(access['client_secret'], client_secret):
+        error = 'Client not authorised.'
+
+        # Check response for values
+
+    if not 'name' in request.get_json():
+        error = 'Missing endpoint name.'
     else:
-        abort(400, error)
+        name = request.get_json()['name']
+        endpoint_base = format_endpoint(name)
 
+    if error is not None:
+        return error, 400
+
+
+    db = get_db()
+
+    # Update json validation or check if it is enabled
+    if not 'json_validation' in request.get_json():
+        json_validation = get_db().execute(
+            'select valid_json from endpoints'
+            ' WHERE name = ?',
+            (name,)
+        ).fetchone()
+        json_validation = json_validation['valid_json']
+    elif request.get_json()['json_validation'] in (0, 1):
+        json_validation = request.get_json()['json_validation']
+        db.execute(
+            'UPDATE endpoints'
+            ' SET valid_json = ?'
+            ' WHERE name = ?',
+            (json_validation, name,)
+        )
+        db.commit()
+    else:
+        return 'ValueError: set json_validation to 0 or 1', 400
+
+    # Update data
+    if not 'data' in request.get_json():
+        pass
+    else:
+        data = request.get_json()['data']
+        if json_validation == 1 and not validate_json(json.dumps(data)):
+            error = 'Invalid json.'
+            abort(400, error)
+        elif json_validation == 1 and validate_json(json.dumps(data)):
+            data = json.dumps(data, indent=3)
+        else:
+            data = str(data)
+
+        db.execute(
+            'UPDATE endpoints'
+            ' SET data = ?'
+            ' WHERE name = ?',
+            (data, name,)
+        )
+        db.commit()
+
+    # Update availability
+    if not 'availability' in request.get_json():
+        pass
+    elif request.get_json()['availability'] in ('Public', 'Private'):
+        availability = request.get_json()['availability']
+        db.execute(
+            'UPDATE endpoints'
+            ' SET availability = ?'
+            ' WHERE name = ?',
+            (availability, name,)
+        )
+        db.commit()
+    else:
+        return 'ValueError: set availability to \'Public\' or \'Private\'', 400
+
+
+    # Update status
+    if not 'status' in request.get_json():
+        pass
+    elif request.get_json()['status'] in ('Active', 'Inactive'):
+        status = request.get_json()['status']
+        db.execute(
+            'UPDATE endpoints'
+            ' SET status = ?'
+            ' WHERE name = ?',
+            (status, name,)
+        )
+        db.commit()
+    else:
+        return 'ValueError: set status to \'Active\' or \'Inactive\'', 400
+
+
+    # Update daily rate limit
+    if not 'daily_rate_limit' in request.get_json():
+        pass
+    elif type(request.get_json()['daily_rate_limit']) is int:
+        daily_rate_limit = request.get_json()['daily_rate_limit']
+        db.execute(
+            'UPDATE endpoints'
+            ' SET daily_rate_limit = ?'
+            ' WHERE name = ?',
+            (daily_rate_limit, name,)
+        )
+        db.commit()
+    else:
+        return 'ValueError: set daily_rate_limit Integer value', 400
+
+
+    close_db()
+    return f'Successfully updated endpoint: {endpoint_base}.'
+
+
+
+@bp.route('/api/delete', methods=('DELETE',))
+def api_delete():
+    authorization = request.headers.get('Authorization')
+    error = None
+
+    if authorization is not None and "Basic " in authorization:
+        client_id, client_secret = basicauth.decode(authorization)
+    else:
+        error = 'Please provide a client id and secret.'
+
+    access = get_db().execute(
+        'SELECT id, author_id, client_secret FROM client_access'
+        ' WHERE client_id = ?'
+        ' AND CURRENT_DATE < DATE_EXPIRY'
+        ' AND create_access = \'TRUE\'',
+        (client_id,)
+    ).fetchone()
+    close_db()
+
+    if access is None:
+        error = 'Client not found.'
+    elif not check_password_hash(access['client_secret'], client_secret):
+        error = 'Client not authorised.'
