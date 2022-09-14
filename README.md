@@ -21,15 +21,15 @@ How to run the app.
 # Current interface
 Login page
 
-<img width="450" alt="image" src="https://user-images.githubusercontent.com/78079422/190216013-bbf25e70-1395-4126-a8ca-8fe61e70adb3.png">
+<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190216013-bbf25e70-1395-4126-a8ca-8fe61e70adb3.png">
 
 Endpoint manager
 
-<img width="450" alt="image" src="https://user-images.githubusercontent.com/78079422/190215379-25f3b202-2780-42ad-bfa9-2027a86f6d3c.png">
+<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190215379-25f3b202-2780-42ad-bfa9-2027a86f6d3c.png">
 
 Token generation
 
-<img width="450" alt="image" src="https://user-images.githubusercontent.com/78079422/190215958-45ac1eed-7a7a-463e-a683-ad64012fe222.png">
+<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190215958-45ac1eed-7a7a-463e-a683-ad64012fe222.png">
 
 
 # Future versions
