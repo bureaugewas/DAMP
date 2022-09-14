@@ -58,6 +58,19 @@ response = requests.put('http://127.0.0.1:5000/api/update',
 print(response)
 print(response.text)
 
+#test update endpoint
+client_id = os.environ.get("CLIENT_ID","126c81b234db2cdf57fed5b6f6958724")
+client_secret = os.environ.get("CLIENT_SECRET","07701727617299a47ba587e94e7eeeb76d0cfcbc4193962a0b6e46779fc02070")
+headers = {'Content-type': 'application/json'}
+body = {"name":"data113"}
+
+response = requests.delete('http://127.0.0.1:5000/api/delete',
+                        headers=headers,
+                        json=body,
+                        auth=(client_id, client_secret))
+print(response)
+print(response.text)
+
 
 #test get endpoint list function
 '''response = requests.get('http://127.0.0.1:5000/metadata')

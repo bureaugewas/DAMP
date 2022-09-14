@@ -335,9 +335,7 @@ def api_update():
     if error is not None:
         return error, 400
 
-
     db = get_db()
-
     # Update json validation or check if it is enabled
     if not 'json_validation' in request.get_json():
         json_validation = get_db().execute(
@@ -394,7 +392,6 @@ def api_update():
     else:
         return 'ValueError: set availability to \'Public\' or \'Private\'', 400
 
-
     # Update status
     if not 'status' in request.get_json():
         pass
@@ -426,7 +423,6 @@ def api_update():
     else:
         return 'ValueError: set daily_rate_limit Integer value', 400
 
-
     close_db()
     return f'Successfully updated endpoint: {endpoint_base}.'
 
@@ -446,7 +442,7 @@ def api_delete():
         'SELECT id, author_id, client_secret FROM client_access'
         ' WHERE client_id = ?'
         ' AND CURRENT_DATE < DATE_EXPIRY'
-        ' AND create_access = \'TRUE\'',
+        ' AND delete_access = \'TRUE\'',
         (client_id,)
     ).fetchone()
     close_db()
@@ -455,3 +451,21 @@ def api_delete():
         error = 'Client not found.'
     elif not check_password_hash(access['client_secret'], client_secret):
         error = 'Client not authorised.'
+
+    # Check response for values
+    if not 'name' in request.get_json():
+        return 'Error: missing endpoint name', 400
+    else:
+        name = request.get_json()['name']
+        endpoint_base = format_endpoint(name)
+
+    db = get_db()
+
+    db.execute(
+        'DELETE FROM endpoints'
+        ' WHERE name = ?',
+        (name,)
+    )
+    db.commit()
+    close_db()
+    return f'Successfully deleted endpoint: {endpoint_base}'
