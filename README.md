@@ -18,7 +18,7 @@ How to run the app.
 4. Open the app by going to: http://127.0.0.1:5000/
 5. Register a user and log in.
 
-# Current interface
+# User interface
 Login page
 
 <img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190216013-bbf25e70-1395-4126-a8ca-8fe61e70adb3.png">
