@@ -15,22 +15,25 @@ from app.db import get_db, close_db
 bp = Blueprint('endpoint_manager', __name__)
 
 def format_endpoint(name):
-    endpoint = '/api/' + name.lower().replace(' ', '_')
+    endpoint = '/api/fetch/' + name.lower().replace(' ', '_')
     return endpoint
 
 def validate_json(jsonData):
     try:
         json.loads(jsonData)
+        json.dumps(jsonData, indent=3)
     except ValueError as err:
         return False
     return True
+
+### User interface endpoints ###
 
 @bp.route('/')
 @login_required
 def index():
     db = get_db()
     cursor = db.execute(
-        'SELECT e.id, name, endpoint_base, data, tags, access, status, created, author_id, username'
+        'SELECT e.id, name, endpoint_base, data, tags, availability, status, created, author_id, username'
         ' FROM endpoints e JOIN user u ON e.author_id = u.id'
         ' WHERE u.id = ?'
         ' ORDER BY created DESC',
@@ -38,7 +41,6 @@ def index():
     ).fetchall()
     return render_template('endpoint_manager/index.html', endpoints=cursor)
 
-#TODO: add check json validity on upload else flash error
 @bp.route('/upload', methods=('GET', 'POST'))
 @login_required
 def upload():
@@ -46,7 +48,7 @@ def upload():
         name = request.form['name']
         endpoint_base = format_endpoint(name)
         data = request.form['data']
-        access = request.form['access']
+        availability = request.form['availability']
         status = request.form['status']
         json_validation = request.form['json_validation']
         daily_rate_limit = request.form['daily_rate_limit']
@@ -54,6 +56,8 @@ def upload():
 
         if json_validation == '1' and not validate_json(data):
             error = 'Invalid json.'
+        else:
+            data = json.dumps(json.loads(data), indent=3)
 
         if not name:
             error = 'Name is required.'
@@ -64,11 +68,12 @@ def upload():
             db = get_db()
             try:
                 db.execute(
-                    'INSERT INTO endpoints (name, endpoint_base, data, access, status, valid_json, author_id, daily_rate_limit)'
+                    'INSERT INTO endpoints (name, endpoint_base, data, availability, status, valid_json, author_id, daily_rate_limit)'
                     ' VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                    (name, endpoint_base, data, access, status, json_validation, g.user['id'], daily_rate_limit)
+                    (name, endpoint_base, data, availability, status, json_validation, g.user['id'], daily_rate_limit)
                 )
                 db.commit()
+                close_db()
             except:
                 flash('Endpoint name already exists')
                 return redirect(url_for('endpoint_manager.upload'))
@@ -78,7 +83,7 @@ def upload():
 
 def fetch_data(id, check_author=True):
     cursor = get_db().execute(
-        'SELECT e.id, name, endpoint_base, data, access, status, valid_json, created, author_id, daily_rate_limit'
+        'SELECT e.id, name, endpoint_base, data, availability, status, valid_json, created, author_id, daily_rate_limit'
         ' FROM endpoints e JOIN user u ON e.author_id = u.id'
         ' WHERE e.id = ?',
         (id,)
@@ -93,7 +98,6 @@ def fetch_data(id, check_author=True):
 
     return cursor
 
-#TODO: add check json on upload else flash error
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
 @login_required
 def update(id):
@@ -103,7 +107,7 @@ def update(id):
         name = request.form['name']
         endpoint_base = format_endpoint(name)
         data = request.form['data']
-        access = request.form['access']
+        availability = request.form['availability']
         status = request.form['status']
         json_validation = request.form['json_validation']
         daily_rate_limit = request.form['daily_rate_limit'] # Not operational
@@ -111,6 +115,8 @@ def update(id):
 
         if json_validation == '1' and not validate_json(data):
             error = 'Invalid json.'
+        else:
+            data = json.dumps(json.loads(data), indent=3)
 
         if not name:
             error = 'Name is required.'
@@ -120,9 +126,9 @@ def update(id):
         else:
             db = get_db()
             db.execute(
-                'UPDATE endpoints SET name = ?, access = ?, status = ?, endpoint_base = ?, data = ?, valid_json = ?, daily_rate_limit = ?'
+                'UPDATE endpoints SET name = ?, availability = ?, status = ?, endpoint_base = ?, data = ?, valid_json = ?, daily_rate_limit = ?'
                 ' WHERE id = ?',
-                (name, access, status, endpoint_base, data, json_validation, daily_rate_limit, id, )
+                (name, availability, status, endpoint_base, data, json_validation, daily_rate_limit, id, )
             )
             db.commit()
             return redirect(url_for('endpoint_manager.index'))
@@ -138,18 +144,36 @@ def delete(id):
     db.commit()
     return redirect(url_for('endpoint_manager.index'))
 
-@bp.route('/api/<name>', methods=('GET','POST',))
-def api(name):
+
+### Request endpoints ###
+
+@bp.route('/metadata', methods=('GET',))
+def metadata():
+    # TODO: add state hash --> hash of database for outsiders to check if there has been a state change on data
+    cursor = get_db().execute(
+        'SELECT name, endpoint_base FROM endpoints WHERE AVAILABILITY = \'Public\' AND STATUS = \'Active\''
+    ).fetchall()
+    close_db()
+
+    endpoints = {}
+    for endpoint in cursor:
+        endpoints[endpoint['name']] = endpoint['endpoint_base']
+
+    return endpoints
+
+@bp.route('/api/fetch/<name>', methods=('GET','POST',))
+def api_fetch(name):
     endpoint_base = format_endpoint(name)
     error = None
 
+    # TODO: Check for read access
     if request.method == 'GET':
         fetch_id = get_db().execute(
             'SELECT id'
             ' FROM endpoints'
             ' WHERE endpoint_base = ?'
             ' AND STATUS = \'Active\''
-            ' AND ACCESS = \'Public\'',
+            ' AND AVAILABILITY = \'Public\'',
             (endpoint_base,)
         ).fetchone()
         close_db()
@@ -164,14 +188,15 @@ def api(name):
         else:
             error = 'Please provide a client id and secret.'
 
+        # TODO:  Check for read access
         fetch_id = get_db().execute(
             'SELECT e.id, client_secret'
             ' FROM endpoints e LEFT JOIN client_access c ON e.id = c.endpoint_access_id'
             ' WHERE endpoint_base = ?'
             ' AND STATUS = \'Active\''
-            ' AND CURRENT_DATE < date_expiry'
-            ' AND (ACCESS = \'Public\''
-            ' OR (ACCESS = \'Private\' AND c.client_id = ?))',
+            ' AND CURRENT_DATE < DATE_EXPIRY'
+            ' AND (AVAILABILITY = \'Public\''
+            ' OR (AVAILABILITY = \'Private\' AND c.client_id = ?))',
             (endpoint_base, client_id,)
         ).fetchone()
         close_db()
@@ -187,15 +212,100 @@ def api(name):
     else:
         abort(400, error)
 
-@bp.route('/metadata', methods=('GET',))
-def metadata():
-    cursor = get_db().execute(
-        'SELECT name, endpoint_base FROM endpoints WHERE ACCESS = \'Public\' AND STATUS = \'Active\''
-    ).fetchall()
+
+@bp.route('/api/upload', methods=('POST',))
+def api_upload():
+    authorization = request.headers.get('Authorization')
+    error = None
+
+    if authorization is not None and "Basic " in authorization:
+        client_id, client_secret = basicauth.decode(authorization)
+    else:
+        error = 'Please provide a client id and secret.'
+
+    access = get_db().execute(
+        'SELECT id, author_id, client_secret FROM client_access'
+        ' WHERE client_id = ?'
+        ' AND CURRENT_DATE < DATE_EXPIRY'
+        ' AND create_access = \'TRUE\'',
+        (client_id,)
+    ).fetchone()
     close_db()
 
-    endpoints = {}
-    for endpoint in cursor:
-        endpoints[endpoint['name']] = endpoint['endpoint_base']
+    if access is None:
+        error = 'Client not found.'
+    elif not check_password_hash(access['client_secret'], client_secret):
+        error = 'Client not authorised.'
 
-    return endpoints
+
+    # Check response for values
+
+    if not 'name' in request.get_json():
+        error = 'Missing endpoint name.'
+    else:
+        name = request.get_json()['name']
+        endpoint_base = format_endpoint(name)
+
+    if not 'data' in request.get_json():
+        error = 'Missing data'
+    else:
+        data = request.get_json()['data']
+
+    if not 'availability' in request.get_json():
+        availability = 'Public'
+    else:
+        availability = request.get_json()['availability']
+
+    if not 'status' in request.get_json():
+        status = 'Active'
+    else:
+        status = request.get_json()['status']
+
+    if not 'json_validation' in request.get_json():
+        json_validation = 1
+    else:
+        json_validation = request.get_json()['json_validation']
+
+    if not 'daily_rate_limit' in request.get_json():
+        daily_rate_limit = 200
+    else:
+        daily_rate_limit = request.get_json()['daily_rate_limit']
+
+    if json_validation == 1 and not validate_json(json.dumps(data)):
+        error = 'Invalid json.'
+    else:
+        data = json.dumps(data, indent = 3)
+
+    if error is not None:
+        abort(400, error)
+    else:
+        try:
+            db = get_db()
+            db.execute(
+                'INSERT INTO endpoints (name, endpoint_base, data, availability, status, valid_json, author_id, daily_rate_limit)'
+                ' VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                (name, endpoint_base, data, availability, status, json_validation, access['author_id'], daily_rate_limit)
+            )
+            db.commit()
+            close_db()
+            return f'Successfully created endpoint: {endpoint_base}.'
+        except db.IntegrityError as err:
+            return 'Endpoint already exists.'
+
+
+
+@bp.route('/api/update/<name>', methods=('PUT',))
+def api_update(name):
+    if error is None:
+        return
+    else:
+        abort(400, error)
+
+
+@bp.route('/api/delete/<name>', methods=('DELETE',))
+def api_delete(name):
+    if error is None:
+        return
+    else:
+        abort(400, error)
+

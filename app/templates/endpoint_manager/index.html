@@ -18,7 +18,7 @@
             {% else %}
               <span style="height: 12px; width: 12px; background-color: #bbb; border-radius: 50%; display: inline-block;" class="dot"></span>
             {% endif %}
-            <a href="{{ endpoint['endpoint_base'] }}">{{ endpoint['endpoint_base'] }}</a> ({{ endpoint['access'] }})</h1>
+            <a href="{{ endpoint['endpoint_base'] }}">{{ endpoint['endpoint_base'] }}</a> ({{ endpoint['availability'] }})</h1>
           <div class="about">by {{ endpoint['username'] }} on {{ endpoint['created'].strftime('%Y-%m-%d') }}</div>
         </div>
         {% if g.user['id'] == endpoint['author_id'] %}

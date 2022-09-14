@@ -13,16 +13,30 @@ print(response)
 print(response.text)
 
 #test post authorization for private endpoint
-client_id = os.environ.get("CLIENT_ID","28d5fe9684317f55d933803dfbb32992")
-client_secret = os.environ.get("CLIENT_SECRET","b7b0b628d4af55431266404aa48fd131df2ffb75a0da4dac0c3f010d17d7f888")
+client_id = os.environ.get("CLIENT_ID","faf03b6b7941c4090c1cd4673efbcfe8")
+client_secret = os.environ.get("CLIENT_SECRET","8bf7803759f83b0d6b2eb6f3028a2bd30a3d08cdd95ec64da47e2c64ef970912")
 headers = {'Content-type': 'application/json'}
 
-response = requests.post('http://127.0.0.1:5000/api/private',
+response = requests.get('http://127.0.0.1:5000/api/fetch/nieuwe_data',
                          headers=headers,
                          auth=(client_id, client_secret))
 print(response)
 print(response.text)
 
+#test create endpoint
+client_id = os.environ.get("CLIENT_ID","126c81b234db2cdf57fed5b6f6958724")
+client_secret = os.environ.get("CLIENT_SECRET","07701727617299a47ba587e94e7eeeb76d0cfcbc4193962a0b6e46779fc02070")
+headers = {'Content-type': 'application/json'}
+body = {"name":"nieuwe_data",
+        "data":{"test":12,
+                "test2":12}}
+
+response = requests.post('http://127.0.0.1:5000/api/upload',
+                        headers=headers,
+                        json=body,
+                        auth=(client_id, client_secret))
+print(response)
+print(response.text)
 
 
 #test get endpoint list function

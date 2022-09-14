@@ -9,12 +9,17 @@
     <label for="endpoint_access_id">Generate token for:</label>
     <select name="endpoint_access_id" id="endpoint_access_id" required>
       {% for endpoint in endpoints %}
-        <option value="{{ endpoint['id'] }}">{{ endpoint['endpoint_base'] }} ({{ endpoint['access'] }})</option>
+        <option value="{{ endpoint['id'] }}">{{ endpoint['endpoint_base'] }} ({{ endpoint['availability'] }})</option>
       {% endfor %}
+      <option value="0">Admin</option>
     </select>
+
+    <!-- Option Read/write access -->
 
     <label for="access_limit">Days access (default = 99999)</label>
     <input type="number" name="access_limit" id="access_limit" min="0" step="1">
+
+
 
     <input type="submit" name="submit" value="Generate">
   </form>

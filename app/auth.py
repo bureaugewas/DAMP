@@ -99,15 +99,15 @@ def login_required(view):
 @login_required
 def client_access():
     cursor_generate = get_db().execute(
-        'SELECT id, endpoint_base, access FROM endpoints ',
+        'SELECT id, endpoint_base, availability FROM endpoints ',
         ()
     ).fetchall()
     close_db()
 
     cursor_delete = get_db().execute(
-        'SELECT c.id as token_id, client_id, endpoint_base, date(c.date_created) as date_created,'
-        'date(c.date_expiry) as date_expiry'
-        ' FROM endpoints e LEFT JOIN client_access c ON e.id = c.endpoint_access_id',
+        ' SELECT c.id as token_id, client_id, IFNULL(endpoint_base,\'Admin token\') as endpoint_base, date(c.date_created) as date_created,'
+        ' date(c.date_expiry) as date_expiry'
+        ' FROM client_access c LEFT JOIN endpoints e ON e.id = c.endpoint_access_id',
         ()
     ).fetchall()
     close_db()
@@ -117,6 +117,18 @@ def client_access():
         client_secret = secrets.token_hex(32)
         endpoint_access_id = request.form['endpoint_access_id']
         access_limit = request.form['access_limit']
+        read_access = 'TRUE'
+        write_access = 'FALSE'
+        create_access = 'FALSE'
+        delete_access = 'FALSE'
+
+        # If Admin
+        if endpoint_access_id == '0':
+            read_access = 'TRUE'
+            write_access = 'TRUE'
+            create_access = 'TRUE'
+            delete_access = 'TRUE'
+
         db = get_db()
         error = None
 
@@ -133,9 +145,11 @@ def client_access():
         if error is None:
             try:
                 db.execute(
-                    "INSERT INTO client_access (author_id, client_id, client_secret, endpoint_access_id,date_created, date_expiry)"
-                    " VALUES (?, ?, ?, ?, ?, ?)",
-                    (g.user['id'], client_id, generate_password_hash(client_secret),endpoint_access_id,date_created,date_expiry),
+                    "INSERT INTO client_access (author_id, client_id, client_secret, endpoint_access_id,date_created, "
+                    "date_expiry, read_access, write_access, create_access, delete_access)"
+                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    (g.user['id'], client_id, generate_password_hash(client_secret),endpoint_access_id,date_created,
+                     date_expiry, read_access, write_access, create_access, delete_access),
                 )
                 db.commit()
             except db.IntegrityError:

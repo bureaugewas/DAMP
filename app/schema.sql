@@ -13,7 +13,7 @@ CREATE TABLE endpoints (
   author_id INTEGER NOT NULL,
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   name TEXT UNIQUE NOT NULL,
-  access TEXT NOT NULL,
+  availability TEXT NOT NULL default 'Private',
   status TEXT NOT NULL,
   endpoint_base TEXT UNIQUE NOT NULL,
   tags TEXT,
@@ -31,7 +31,11 @@ CREATE TABLE client_access (
   endpoint_access_id INTEGER NOT NULL,
   date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   date_expiry TIMESTAMP NOT NULL ,
-  active TEXT NOT NULL DEFAULT 'TRUE',
+  active BOOL NOT NULL DEFAULT 'TRUE',
+  read_access BOOL NOT NULL DEFAULT 'FALSE',
+  write_access BOOL NOT NULL DEFAULT 'FALSE',
+  create_access BOOL NOT NULL DEFAULT 'FALSE',
+  delete_access BOOL NOT NULL DEFAULT 'FALSE',
   FOREIGN KEY (author_id) REFERENCES user (id),
   FOREIGN KEY (endpoint_access_id) REFERENCES endpoints (id)
 );
