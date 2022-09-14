@@ -8,11 +8,8 @@ How to run the app.
 1. Clone the repository.
 2. Set the Ddist project as environment.
 3. Run the following commands in terminal:
-
 ```flask init-db```
-
 ```flask run```
-
 4. Open the app by going to: http://127.0.0.1:5000/
 5. Register a user and log in.
 
