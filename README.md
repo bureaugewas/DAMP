@@ -1,5 +1,5 @@
 # Decentralised Data Interface System
-(Note: Development of latest version: https://github.com/bureaugewas/Ddist/tree/Ddist_V1.1)
+(Note: Development of latest version V1.1: https://github.com/bureaugewas/Ddist/tree/Ddist_V1.1)
 
 
 
