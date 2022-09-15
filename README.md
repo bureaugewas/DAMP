@@ -24,22 +24,71 @@ Endpoints can be created, updated or deleted using Post, Put and Delete methods.
 1. Create an Admin token by going to 'Client_access'
 2. Select 'Generate token for:' and choose 'Admin'
 3. Select the amount of days you want the token to have access
-4. Copy the Client_id and Client_secret to a text document
-
-## Uploading data via endpoint
-
+4. Paste the client_id and client_secret in the following Python script
 ```
 client_id = os.environ.get("CLIENT_ID","<Client_id>")
 client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
 ```
 
-Updating data via endpoint
+## Uploading data via endpoint
+5. Uploading will create a new endpoint using a POST method (Paremeter description down below):
 ```
+headers = {'Content-type': 'application/json'}
+body = {"name":"data11312",
+        "json_validation":"1",
+        "status":"Inactive",
+        "availability":"Private",
+        "daily_rate_limit":200,
+        "data":{"test":1,"test2":2}}
 ```
+6. Add the headers and body to the request and run the Python script
+```
+response = requests.post('http://127.0.0.1:5000/api/upload',
+                        headers=headers,
+                        json=body,
+                        auth=(client_id, client_secret))
+print(response)
+```
+7.
 
-Deleteting data via endpoing
+Updating data via endpoint
+5. Updating will update an existing endpoint using a PUT method
 ```
+headers = {'Content-type': 'application/json'}
+body = {"name":"<name">,
+        "availability": "Public",
+        "status": "Active",
+        "json_validation":0,
+        "daily_rate_limit":10,
+        "data": "hallo"}
 ```
+6. Add the headers and body to the request and run the Python script
+```
+response = requests.put('http://127.0.0.1:5000/api/update',
+                        headers=headers,
+                        json=body,
+                        auth=(client_id, client_secret))
+print(response)
+```
+7.
+
+
+Deleteting data via endpoint
+5. Deleting will delete an existing endpoint using a DELETE method
+```
+headers = {'Content-type': 'application/json'}
+body = {"name":"<name>"} OR
+body = {"endpoint":"/api/fetch/<name>"}
+```
+6. Add the headers and body to the request and run the Python script
+```
+response = requests.delete('http://127.0.0.1:5000/api/delete',
+                        headers=headers,
+                        json=body,
+                        auth=(client_id, client_secret))
+print(response)
+```
+7.
 
 
 # User interface
