@@ -233,9 +233,9 @@ def api_upload():
     close_db()
 
     if access is None:
-        error = 'Client not found.'
+        error = 'Client not authorised'
     elif not check_password_hash(access['client_secret'], client_secret):
-        error = 'Client not authorised.'
+        error = 'Client not authorised'
 
 
     # Check response for values
@@ -320,9 +320,9 @@ def api_update():
     close_db()
 
     if access is None:
-        error = 'Client not found.'
+        error = 'Client not authorised'
     elif not check_password_hash(access['client_secret'], client_secret):
-        error = 'Client not authorised.'
+        error = 'Client not authorised'
 
         # Check response for values
 
@@ -448,24 +448,39 @@ def api_delete():
     close_db()
 
     if access is None:
-        error = 'Client not found.'
+        error = 'Client not authorised'
     elif not check_password_hash(access['client_secret'], client_secret):
-        error = 'Client not authorised.'
+        error = 'Client not authorised'
+
+    if error is not None:
+        return error, 400
 
     # Check response for values
-    if not 'name' in request.get_json():
-        return 'Error: missing endpoint name', 400
-    else:
+    if not 'name' in request.get_json() and not 'endpoint' in request.get_json():
+        return 'Error: missing endpoint name or definition', 400
+    elif 'name' in request.get_json():
         name = request.get_json()['name']
         endpoint_base = format_endpoint(name)
+    elif 'endpoint' in request.get_json():
+        endpoint_base = request.get_json()['endpoint']
+
 
     db = get_db()
+    get_result = db.execute(
+        'select 1 FROM endpoints'
+        ' WHERE endpoint_base = ?',
+        (endpoint_base,)
+    ).fetchone()
+    if get_result is None:
+        return f'Endpoint {endpoint_base} does not exist.'
+    else:
+        db.execute(
+            'DELETE FROM endpoints'
+            ' WHERE endpoint_base = ?',
+            (endpoint_base,)
+        ).fetchone
+        db.commit()
+        close_db()
+        return f'Successfully deleted endpoint: {endpoint_base}'
 
-    db.execute(
-        'DELETE FROM endpoints'
-        ' WHERE name = ?',
-        (name,)
-    )
-    db.commit()
-    close_db()
-    return f'Successfully deleted endpoint: {endpoint_base}'
+
