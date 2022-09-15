@@ -34,11 +34,11 @@ client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
 5. Uploading will create a new endpoint using a POST method (Paremeter description down below):
 ```
 headers = {'Content-type': 'application/json'}
-body = {"name":"data11312",
-        "json_validation":"1",
-        "status":"Inactive",
-        "availability":"Private",
+body = {"name":"<name>",
+        "status":"Active",
+        "availability":"Public",
         "daily_rate_limit":200,
+        "json_validation":"1",
         "data":{"test":1,"test2":2}}
 ```
 6. Add the headers and body to the request and run the Python script:
@@ -55,12 +55,12 @@ print(response)
 5. Updating will update an existing endpoint using a PUT method:
 ```
 headers = {'Content-type': 'application/json'}
-body = {"name":"<name">,
-        "availability": "Public",
-        "status": "Active",
+body = {"name":"<name>",
+        "status":"Active",
+        "availability":"Private",
         "json_validation":0,
         "daily_rate_limit":10,
-        "data": "hallo"}
+        "data": "Non Json data"}
 ```
 6. Add the headers and body to the request and run the Python script:
 ```
@@ -91,7 +91,7 @@ print(response)
 7. The endpoint should now dissapear from the user interface
 
 ### Parameter definitions
-        name:                    Name of the endpoint. Will become /api/fetch/<name>.
+        name:                           Name of the endpoint. Will become /api/fetch/<name>.
         availability (Public/Private):  Will determine if your endpoint is publically accessible or whether a token is needed.
         status (Active/Inactive):       Will determine if your endpoint is reachable or not.
         daily_rate_limit (Integer):     Will set the daily limit an API can be called by a user (not functional yet).
