@@ -13,8 +13,8 @@ print(response)
 print(response.text)
 
 #test post authorization for private endpoint
-client_id = os.environ.get("CLIENT_ID","faf03b6b7941c4090c1cd4673efbcfe8")
-client_secret = os.environ.get("CLIENT_SECRET","8bf7803759f83b0d6b2eb6f3028a2bd30a3d08cdd95ec64da47e2c64ef970912")
+client_id = os.environ.get("CLIENT_ID","<Client_id>")
+client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
 headers = {'Content-type': 'application/json'}
 
 response = requests.get('http://127.0.0.1:5000/api/fetch/nieuwe_data',
@@ -24,14 +24,15 @@ print(response)
 print(response.text)
 
 #test create endpoint
-client_id = os.environ.get("CLIENT_ID","126c81b234db2cdf57fed5b6f6958724")
-client_secret = os.environ.get("CLIENT_SECRET","07701727617299a47ba587e94e7eeeb76d0cfcbc4193962a0b6e46779fc02070")
+client_id = os.environ.get("CLIENT_ID","<Client_id>")
+client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
 headers = {'Content-type': 'application/json'}
 body = {"name":"data11312",
+        "json_validation":"1",
         "status":"Inactive",
         "availability":"Private",
-        "data":{"test":12,
-                "test2":12}}
+        "daily_rate_limit":200,
+        "data":{"test":1,"test2":2}}
 
 response = requests.post('http://127.0.0.1:5000/api/upload',
                         headers=headers,
@@ -41,10 +42,10 @@ print(response)
 print(response.text)
 
 #test update endpoint
-client_id = os.environ.get("CLIENT_ID","126c81b234db2cdf57fed5b6f6958724")
-client_secret = os.environ.get("CLIENT_SECRET","07701727617299a47ba587e94e7eeeb76d0cfcbc4193962a0b6e46779fc02070")
+client_id = os.environ.get("CLIENT_ID","<Client_id>")
+client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
 headers = {'Content-type': 'application/json'}
-body = {"name":"data11312",
+body = {"name":"<name>",
         "availability": "Public",
         "status": "Active",
         "json_validation":0,
@@ -59,10 +60,10 @@ print(response)
 print(response.text)
 
 #test update endpoint
-client_id = os.environ.get("CLIENT_ID","126c81b234db2cdf57fed5b6f6958724")
-client_secret = os.environ.get("CLIENT_SECRET","07701727617299a47ba587e94e7eeeb76d0cfcbc4193962a0b6e46779fc02070")
+client_id = os.environ.get("CLIENT_ID","<Client_id>")
+client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
 headers = {'Content-type': 'application/json'}
-body = {"name":"data113"}
+body = {"name":"nieuwe_data"}
 
 response = requests.delete('http://127.0.0.1:5000/api/delete',
                         headers=headers,
