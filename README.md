@@ -1,4 +1,4 @@
-# Decentralised Data Interface System V1.1
+# Distributed API Management Platform (DAMP) V1.1
 
 *** In Development ***
 
