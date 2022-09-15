@@ -41,7 +41,7 @@ body = {"name":"data11312",
         "daily_rate_limit":200,
         "data":{"test":1,"test2":2}}
 ```
-6. Add the headers and body to the request and run the Python script
+6. Add the headers and body to the request and run the Python script:
 ```
 response = requests.post('http://127.0.0.1:5000/api/upload',
                         headers=headers,
@@ -49,10 +49,10 @@ response = requests.post('http://127.0.0.1:5000/api/upload',
                         auth=(client_id, client_secret))
 print(response)
 ```
-7.
+7. The newly created endpoint should now appear in the user interface
 
-Updating data via endpoint
-5. Updating will update an existing endpoint using a PUT method
+## Updating data via endpoint
+5. Updating will update an existing endpoint using a PUT method:
 ```
 headers = {'Content-type': 'application/json'}
 body = {"name":"<name">,
@@ -62,7 +62,7 @@ body = {"name":"<name">,
         "daily_rate_limit":10,
         "data": "hallo"}
 ```
-6. Add the headers and body to the request and run the Python script
+6. Add the headers and body to the request and run the Python script:
 ```
 response = requests.put('http://127.0.0.1:5000/api/update',
                         headers=headers,
@@ -70,17 +70,17 @@ response = requests.put('http://127.0.0.1:5000/api/update',
                         auth=(client_id, client_secret))
 print(response)
 ```
-7.
+7. The changes to the endpoint should now appear in the user interface
 
 
-Deleteting data via endpoint
-5. Deleting will delete an existing endpoint using a DELETE method
+## Deleteting data via endpoint
+5. Deleting will delete an existing endpoint using a DELETE method:
 ```
 headers = {'Content-type': 'application/json'}
 body = {"name":"<name>"} OR
 body = {"endpoint":"/api/fetch/<name>"}
 ```
-6. Add the headers and body to the request and run the Python script
+6. Add the headers and body to the request and run the Python script:
 ```
 response = requests.delete('http://127.0.0.1:5000/api/delete',
                         headers=headers,
@@ -88,8 +88,15 @@ response = requests.delete('http://127.0.0.1:5000/api/delete',
                         auth=(client_id, client_secret))
 print(response)
 ```
-7.
+7. The endpoint should now dissapear from the user interface
 
+### Parameter definitions
+name: Name of the endpoint. Will become /api/fetch/<name>.
+availability (Public/Private): Will determine if your endpoint is publically accessible or whether a token is needed.
+status (Active/Inactive): Will determine if your endpoint is reachable or not.
+daily_rate_limit (Integer): Will set the daily limit an API can be called by a user (not functional yet).
+json_validation (0/1): Will validate whether your data contains valid json.
+data: The data you want to make available via your endpoint. Can be plain text or json.
 
 # User interface
 Login page
