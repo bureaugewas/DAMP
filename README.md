@@ -9,7 +9,7 @@ https://github.com/bureaugewas/Ddist/discussions
 Want to jump right in? Features for V1.1:
 https://github.com/users/bureaugewas/projects/5
 
-How to run the app.
+# Running the Application
 1. Clone the repository.
 2. Set the Ddist project as environment.
 3. Run the following commands in terminal:
@@ -18,7 +18,7 @@ How to run the app.
 4. Open the app by going to: http://127.0.0.1:5000/
 5. Register a user and log in.
 
-# Endpoint commands
+# Endpoint Commands
 Endpoints can be created, updated or deleted using Post, Put and Delete methods. The following steps describe how this is done:
 
 1. Create an Admin token by going to 'Client_access'
