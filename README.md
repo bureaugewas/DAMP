@@ -20,6 +20,7 @@ https://github.com/users/bureaugewas/projects/5
 4. Open the app by going to: http://127.0.0.1:5000/
 5. Register a user and log in.
 
+
 # Endpoint Commands
 Endpoints can be created, updated or deleted using Post, Put and Delete methods. The following steps describe how this is done:
 
@@ -31,6 +32,7 @@ Endpoints can be created, updated or deleted using Post, Put and Delete methods.
 client_id = os.environ.get("CLIENT_ID","<Client_id>")
 client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
 ```
+
 
 ## Uploading data via POST method
 5. Uploading will create a new endpoint using a POST method (Paremeter description down below):
@@ -52,6 +54,7 @@ response = requests.post('http://127.0.0.1:5000/api/upload',
 print(response)
 ```
 7. The newly created endpoint should now appear in the user interface
+
 
 ## Updating data via PUT method
 5. Updating will update an existing endpoint using a PUT method:
@@ -92,6 +95,7 @@ print(response)
 ```
 7. The endpoint should now dissapear from the user interface
 
+
 ### Parameter definitions
         name:                           Name of the endpoint. Will become /api/fetch/<name>.
         availability (Public/Private):  Will determine if your endpoint is publically accessible or whether a token is needed.
@@ -99,6 +103,7 @@ print(response)
         daily_rate_limit (Integer):     Will set the daily limit an API can be called by a user (not functional yet).
         json_validation (0/1):          Will validate whether your data contains valid json.
         data:                           The data you want to make available via your endpoint. Can be plain text or json.
+
 
 # User interface
 Login page
