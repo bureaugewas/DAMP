@@ -18,6 +18,28 @@ How to run the app.
 4. Open the app by going to: http://127.0.0.1:5000/
 5. Register a user and log in.
 
+# Endpoint commands
+1. Create an Admin token by going to 'Client_access'
+2. Select 'Generate token for:' and choose 'Admin'
+3. Select the amount of days you want the token to have access
+4. Copy the Client_id and Client_secret to a text document
+
+## Uploading data via endpoint
+
+```
+client_id = os.environ.get("CLIENT_ID","<Client_id>")
+client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
+```
+
+Updating data via endpoint
+```
+```
+
+Deleteting data via endpoing
+```
+```
+
+
 # User interface
 Login page
 
