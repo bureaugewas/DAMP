@@ -299,7 +299,7 @@ def api_upload():
             return 'Error: Endpoint already exists', 400
 
 
-
+# TODO: Check if update works when endpoint doesn't exist
 @bp.route('/api/update', methods=('PUT',))
 def api_update():
     authorization = request.headers.get('Authorization')
