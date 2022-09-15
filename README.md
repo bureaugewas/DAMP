@@ -1,6 +1,7 @@
 # Decentralised Data Interface System V1.1
 
 *** In Development ***
+
 Ddist is a Node Based Distributed Data Interfacing System. It's an app for quickly spinning up and hosting Application Computer Interfaces (or APIs). The goal is to eventually Dockerize this project and make it available on Umbrel OS. Use cases for this application are "accountless" logins-, decentralized retail/shop platforms and decentralized social media applications.
 
 Interested in collaborating, but don't know where to start?
