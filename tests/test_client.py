@@ -45,7 +45,7 @@ print(response.text)
 client_id = os.environ.get("CLIENT_ID","<Client_id>")
 client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
 headers = {'Content-type': 'application/json'}
-body = {"name":"<name">,
+body = {"name":"<name>",
         "availability": "Public",
         "status": "Active",
         "json_validation":0,
