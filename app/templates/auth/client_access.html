@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Generate client access token{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="endpoint_access_id">Generate token for:</label>
+    <select name="endpoint_access_id" id="endpoint_access_id" required>
+      {% for endpoint in endpoints %}
+        <option value="{{ endpoint['id'] }}">{{ endpoint['endpoint_base'] }} ({{ endpoint['availability'] }})</option>
+      {% endfor %}
+      <option value="0">Admin</option>
+    </select>
+
+    <!-- Option Read/write access -->
+
+    <label for="access_limit">Days access (default = 99999)</label>
+    <input type="number" name="access_limit" id="access_limit" min="0" step="1">
+
+
+
+    <input type="submit" name="submit" value="Generate">
+  </form>
+
+  <form method="post">
+    <label for="delete_token">Delete token</label>
+    <select name="delete_token" id="delete_token" required>
+      <option value="" selected disabled></option>
+      {% for token in tokens %}
+        {% if token['token_id'] != "NULL" %}
+          <option value="{{ token['client_id'] }}">{{ token['endpoint_base'] }} - Client id: {{ token['client_id'] }} - Expiry: {{ token['date_expiry'] }}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+
+    <input type="submit" name="submit" value="Delete">
+  </form>
+{% endblock %}
+
+

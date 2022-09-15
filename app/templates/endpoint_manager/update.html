@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block name %}Edit "{{ endpoint['name'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="name">Name</label>
+    <input name="name" id="name"
+      value="{{ request.form['name'] or endpoint['name'] }}" required>
+
+    <label for="data">Data</label>
+    <textarea name="data" id="data">{{ request.form['data'] or endpoint['data'] }}</textarea>
+
+    <label for="json_validation">JSON validation</label>
+    {% if endpoint['valid_json'] == 1 %}
+    <input type="checkbox" id="json_validation" name="json_validation" value="1" checked>
+    {% else %}
+    <input type='checkbox' id="json_validation" name='json_validation' value="1" >
+    {% endif %}
+    <input type='hidden' value='0' name='json_validation'>
+
+    <label for="availability">Set privacy level</label>
+    <select name="availability" id="availability" required>
+      <option value="{{ request.form['availability'] or endpoint['availability'] }}" selected hidden>{{ endpoint['availability'] }}</option>
+      <option value="Public">Public</option>
+      <option value="Private">Private</option>
+    </select>
+
+    <label for="status">Set status</label>
+    <select name="status" id="status" required>
+      <option value="{{ request.form['status'] or endpoint['status'] }}" selected hidden>{{ endpoint['status'] }}</option>
+      <option value="Active">Active</option>
+      <option value="Inactive">Inactive</option>
+    </select>
+
+    <label for="daily_rate_limit">Set daily rate limit (Not functional yet, default = 200)</label>
+    <input type="number" name="daily_rate_limit" id="daily_rate_limit" min="0" step="1" value="200">
+
+    <input type="submit" value="Save">
+  </form>
+  <hr>
+  <form action="{{ url_for('endpoint_manager.delete', id=endpoint['id']) }}" method="post">
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+  </form>
+{% endblock %}

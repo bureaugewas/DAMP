@@ -1,69 +1,38 @@
-# Decentralised Data Interface System V1.0
-(Note: Development of latest version V1.1: https://github.com/bureaugewas/Ddist/tree/Ddist_V1.1)
+# Decentralised Data Interface System V1.1
+
+*** In Development ***
+
+Interested in collaborating, but don't know where to start?
+Visit the discussion page to suggest a feature, share your vision or ask questions about the project:
+https://github.com/bureaugewas/Ddist/discussions
+
+Want to jump right in? Features for V1.1:
+https://github.com/users/bureaugewas/projects/5
+
+How to run the app.
+1. Clone the repository.
+2. Set the Ddist project as environment.
+3. Run the following commands in terminal:
+```flask init-db```
+```flask run```
+4. Open the app by going to: http://127.0.0.1:5000/
+5. Register a user and log in.
+
+# User interface
+Login page
+
+<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190216013-bbf25e70-1395-4126-a8ca-8fe61e70adb3.png">
+
+Endpoint manager
+
+<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190215379-25f3b202-2780-42ad-bfa9-2027a86f6d3c.png">
+
+Token generation
+
+<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190215958-45ac1eed-7a7a-463e-a683-ad64012fe222.png">
 
 
-
-Ddist is a Node Based Decentralised Data Interfacing Platform. It's an app for quickly spinning up and hosting Application Computer Interfaces (or APIs).
-This project is very much in progress and not for profit. Help is greatly appreciated.
-
-
-V1.0 Features:
-
-- Create one or multiple API instances with named endpoint.
-- Upload a .json file to that instance that can be directly queried over the internet.
-- Ability for the owner of an endpoint instance to POST, PUT or DELETE .json data.
-- Simple User interface for login, logout and uploading files.
-- File upload from interface.
-
-How to use Ddist:
-1. Download and install Docker from https://www.docker.com/
-2. Clone the project and open it in your favorite IDE
-3. Build the Docker Image (e.g. from your Pycharm terminal):
-```
-docker build -t ddist-api .
-```
-4. Run the docker application
-```
-docker run -d -p 5000:5000 --name python-restapi ddist-api
-```
-5. Visit: http://127.0.0.1:5000/
-6. Login with the test user
-```
-test_user:test_password
-```
-6. Create an new API endpoint by either uploading a .json file or using any of the following commands:
-```
-response = requests.post("http://127.0.0.1:5000/api/<endpoint_name>",
-                         json={"key1":"value1"}
-                         ,auth=('test_user', 'test_password')
-                         )
-```
-7. Other ways to interact with the API: 
-```
-# Get endpoint list
-requests.get('http://127.0.0.1:5000/meta')
-
-# Query endpoint
-requests.get('http://127.0.0.1:5000/api/<endpoint_name>')
-
-# Append new data
-requests.put("http://127.0.0.1:5000/api/<endpoint_name>"
-                        ,json={"key2":"value2"}
-                        ,auth=('test_user', 'test_password'))
-# Delete endpoint
-requests.delete("http://127.0.0.1:5000/api/<endpoint_name>"
-                      ,auth=('test_user', 'test_password')
-                      )
-```
-
-Future versions:
-
-V1.1
-- Secure login and token generation
-- Ability to query a nodes available endpoints including some metadata.
-- Ability to activate and deactive API instances.
-- Ability to set API rate limits.
-- Security features
+# Future versions
 
 v2.0
 - List of other people's endpoints.
