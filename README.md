@@ -1,8 +1,13 @@
-# Decentralised Data Interface System
+# Decentralised Data Interface System V1.1
 
-Development branch. Feel free to collaborate. 
+*** In Development ***
 
-For features to be developed, check project: https://github.com/users/bureaugewas/projects/5. Feature suggestions may also be added.
+Interested in collaborating, but don't know where to start?
+Visit the discussion page to suggest a feature, share your vision or ask questions about the project:
+https://github.com/bureaugewas/Ddist/discussions
+
+Want to jump right in? Features for V1.1:
+https://github.com/users/bureaugewas/projects/5
 
 How to run the app.
 1. Clone the repository.
@@ -13,14 +18,21 @@ How to run the app.
 4. Open the app by going to: http://127.0.0.1:5000/
 5. Register a user and log in.
 
-Future versions:
+# User interface
+Login page
 
-V1.1
-- Secure login and token generation
-- Ability to query a nodes available endpoints including some metadata.
-- Ability to activate and deactive API instances.
-- Ability to set API rate limits.
-- Security features
+<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190216013-bbf25e70-1395-4126-a8ca-8fe61e70adb3.png">
+
+Endpoint manager
+
+<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190215379-25f3b202-2780-42ad-bfa9-2027a86f6d3c.png">
+
+Token generation
+
+<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190215958-45ac1eed-7a7a-463e-a683-ad64012fe222.png">
+
+
+# Future versions
 
 v2.0
 - List of other people's endpoints.
