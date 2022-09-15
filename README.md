@@ -19,6 +19,8 @@ How to run the app.
 5. Register a user and log in.
 
 # Endpoint commands
+Endpoints can be created, updated or deleted using Post, Put and Delete methods. The following steps describe how this is done:
+
 1. Create an Admin token by going to 'Client_access'
 2. Select 'Generate token for:' and choose 'Admin'
 3. Select the amount of days you want the token to have access
