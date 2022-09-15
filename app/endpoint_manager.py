@@ -1,8 +1,6 @@
 import json
 import basicauth
 
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
 )
