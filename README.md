@@ -91,12 +91,12 @@ print(response)
 7. The endpoint should now dissapear from the user interface
 
 ### Parameter definitions
-        name: Name of the endpoint. Will become /api/fetch/<name>.
-        availability (Public/Private): Will determine if your endpoint is publically accessible or whether a token is needed.
-        status (Active/Inactive): Will determine if your endpoint is reachable or not.
-        daily_rate_limit (Integer): Will set the daily limit an API can be called by a user (not functional yet).
-        json_validation (0/1): Will validate whether your data contains valid json.
-        data: The data you want to make available via your endpoint. Can be plain text or json.
+        name:                    Name of the endpoint. Will become /api/fetch/<name>.
+        availability (Public/Private):  Will determine if your endpoint is publically accessible or whether a token is needed.
+        status (Active/Inactive):       Will determine if your endpoint is reachable or not.
+        daily_rate_limit (Integer):     Will set the daily limit an API can be called by a user (not functional yet).
+        json_validation (0/1):          Will validate whether your data contains valid json.
+        data:                           The data you want to make available via your endpoint. Can be plain text or json.
 
 # User interface
 Login page
