@@ -21,7 +21,7 @@ https://github.com/users/bureaugewas/projects/5
 # Endpoint Commands
 Endpoints can be created, updated or deleted using Post, Put and Delete methods. The following steps describe how this is done:
 
-1. Create an Admin token by going to 'Client_access'
+1. Create an Admin token by going to 'Client_access' in the user interface
 2. Select 'Generate token for:' and choose 'Admin'
 3. Select the amount of days you want the token to have access
 4. Paste the client_id and client_secret in the following Python script
