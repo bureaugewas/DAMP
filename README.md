@@ -30,7 +30,7 @@ client_id = os.environ.get("CLIENT_ID","<Client_id>")
 client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
 ```
 
-## Uploading data via endpoint
+## Uploading data via POST method
 5. Uploading will create a new endpoint using a POST method (Paremeter description down below):
 ```
 headers = {'Content-type': 'application/json'}
@@ -51,7 +51,7 @@ print(response)
 ```
 7. The newly created endpoint should now appear in the user interface
 
-## Updating data via endpoint
+## Updating data via PUT method
 5. Updating will update an existing endpoint using a PUT method:
 ```
 headers = {'Content-type': 'application/json'}
@@ -73,7 +73,7 @@ print(response)
 7. The changes to the endpoint should now appear in the user interface
 
 
-## Deleteting data via endpoint
+## Deleteting data via DELETE method
 5. Deleting will delete an existing endpoint using a DELETE method:
 ```
 headers = {'Content-type': 'application/json'}
