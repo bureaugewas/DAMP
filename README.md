@@ -120,9 +120,13 @@ Token generation
 
 
 # Future versions
+Check out ideas for future versions here:
+
+v1.2
+https://github.com/users/bureaugewas/projects/6
 
 v2.0
-- List of other people's endpoints.
-- Ability to save and query other people's endpoints and save data in the app.
-- Ability to set permissions on endpoints.
-- Ability to request lightning payments for data.
+https://github.com/users/bureaugewas/projects/7
+
+Or share your ideas for features in a discussion:
+https://github.com/bureaugewas/DAMP/discussions/8
