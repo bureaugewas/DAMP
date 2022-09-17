@@ -28,6 +28,7 @@ def test_register_validate_input(client, username, password, message):
     )
     assert message in response.data
 
+
 def test_login(client, auth):
     assert client.get('/auth/login').status_code == 200
     response = auth.login()
@@ -37,6 +38,7 @@ def test_login(client, auth):
         client.get('/')
         assert session['user_id'] == 1
         assert g.user['username'] == 'test'
+
 
 ''' #TODO: Test token generation      
 def test_token_generation(client, auth):
@@ -51,6 +53,7 @@ def test_token_generation(client, auth):
 def test_login_validate_input(auth, username, password, message):
     response = auth.login(username, password)
     assert message in response.data
+
 
 def test_logout(client, auth):
     auth.login()

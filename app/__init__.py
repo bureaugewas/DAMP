@@ -10,14 +10,15 @@ from flask import (
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.middleware.proxy_fix import ProxyFix
 
+
 def create_app(test_config=None):
-    app = Flask(__name__, instance_relative_config=True,
-                static_folder=os.path.dirname(
-                os.path.abspath(__file__)) + '/static')
+    app = Flask(__name__,
+                instance_relative_config=True,
+                static_folder=os.path.dirname(os.path.abspath(__file__)) + '/static')
 
     app.config.from_mapping(
             SECRET_KEY='dev',
-            DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+            DATABASE=os.path.join(app.instance_path, 'damp.sqlite'),
         )
 
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
@@ -42,7 +43,7 @@ def create_app(test_config=None):
 
     # Add more configurations
     app.config['APP_FOLDER'] = 'app'
-    app.config['TEMPLATES_FOLDER'] = os.path.join(app.config['APP_FOLDER'],'templates')
+    app.config['TEMPLATES_FOLDER'] = os.path.join(app.config['APP_FOLDER'], 'templates')
     app.config['UPLOAD_PATH'] = os.path.join(app.config['TEMPLATES_FOLDER'], 'upload.html')
 
     app.config['CACHING'] = False
@@ -59,5 +60,6 @@ def create_app(test_config=None):
     app.add_url_rule('/', endpoint='index')
 
     return app
+
 
 app = create_app()

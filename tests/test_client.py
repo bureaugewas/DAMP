@@ -73,7 +73,7 @@ print(response)
 print(response.text)'''
 
 
-#test get endpoint list function
+# test get endpoint list function
 '''response = requests.get('http://127.0.0.1:5000/metadata')
 print(response.text)
 
