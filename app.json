@@ -1,5 +1,5 @@
 {
-  "name": "Ddist",
+  "name": "DAMP",
   "description": "",
   "repository": "",
   "logo": "",
@@ -8,164 +8,164 @@
   ],
   "stack": "container",
   "env": {
-    "DDIST_URL_PREFIX": {
-      "description": "The URL prefix to use for the DDIST instance (i.e. \"/DDIST\")",
+    "DAMP_URL_PREFIX": {
+      "description": "The URL prefix to use for the DAMP instance (i.e. \"/DAMP\")",
       "value": "",
       "required": false
     },
-    "DDIST_USER": {
-      "description": "The username for basic auth. DDIST_PASS must also be set if used. Leave empty to disable.",
+    "DAMP_USER": {
+      "description": "The username for basic auth. DAMP_PASS must also be set if used. Leave empty to disable.",
       "value": "",
       "required": false
     },
-    "DDIST_PASS": {
-      "description": "The password for basic auth. DDIST_USER must also be set if used. Leave empty to disable.",
+    "DAMP_PASS": {
+      "description": "The password for basic auth. DAMP_USER must also be set if used. Leave empty to disable.",
       "value": "",
       "required": false
     },
-    "DDIST_PROXY_USER": {
+    "DAMP_PROXY_USER": {
       "description": "The username of the proxy server. Leave empty to disable.",
       "value": "",
       "required": false
     },
-    "DDIST_PROXY_PASS": {
+    "DAMP_PROXY_PASS": {
       "description": "The password of the proxy server. Leave empty to disable.",
       "value": "",
       "required": false
     },
-    "DDIST_PROXY_TYPE": {
+    "DAMP_PROXY_TYPE": {
       "description": "The type of the proxy server. For example \"socks5\". Leave empty to disable.",
       "value": "",
       "required": false
     },
-    "DDIST_PROXY_LOC": {
+    "DAMP_PROXY_LOC": {
       "description": "The location of the proxy server (host or ip). Leave empty to disable.",
       "value": "",
       "required": false
     },
-    "DDIST_ALT_TW": {
+    "DAMP_ALT_TW": {
       "description": "The site to use as a replacement for twitter.com when site alternatives are enabled in the config.",
       "value": "farside.link/nitter",
       "required": false
     },
-    "DDIST_ALT_YT": {
+    "DAMP_ALT_YT": {
       "description": "The site to use as a replacement for youtube.com when site alternatives are enabled in the config.",
       "value": "farside.link/invidious",
       "required": false
     },
-    "DDIST_ALT_IG": {
+    "DAMP_ALT_IG": {
       "description": "The site to use as a replacement for instagram.com when site alternatives are enabled in the config.",
       "value": "farside.link/bibliogram/u",
       "required": false
     },
-    "DDIST_ALT_RD": {
+    "DAMP_ALT_RD": {
       "description": "The site to use as a replacement for reddit.com when site alternatives are enabled in the config.",
       "value": "farside.link/libreddit",
       "required": false
     },
-    "DDIST_ALT_MD": {
+    "DAMP_ALT_MD": {
       "description": "The site to use as a replacement for medium.com when site alternatives are enabled in the config.",
       "value": "farside.link/scribe",
       "required": false
     },
-    "DDIST_ALT_TL": {
+    "DAMP_ALT_TL": {
       "description": "The Google Translate alternative to use for all searches following the 'translate ___' structure.",
       "value": "farside.link/lingva",
       "required": false
     },
-    "DDIST_ALT_IMG": {
+    "DAMP_ALT_IMG": {
       "description": "The site to use as a replacement for imgur.com when site alternatives are enabled in the config.",
       "value": "farside.link/rimgo",
       "required": false
     },
-    "DDIST_ALT_WIKI": {
+    "DAMP_ALT_WIKI": {
       "description": "The site to use as a replacement for wikipedia.com when site alternatives are enabled in the config.",
       "value": "farside.link/wikiless",
       "required": false
     },
-    "DDIST_ALT_IMDB": {
+    "DAMP_ALT_IMDB": {
       "description": "The site to use as a replacement for imdb.com when site alternatives are enabled in the config.",
       "value": "farside.link/libremdb",
       "required": false
     },
-    "DDIST_ALT_QUORA": {
+    "DAMP_ALT_QUORA": {
       "description": "The site to use as a replacement for quora.com when site alternatives are enabled in the config.",
       "value": "farside.link/quetre",
       "required": false
     },
-    "DDIST_MINIMAL": {
+    "DAMP_MINIMAL": {
         "description": "Remove everything except basic result cards from all search queries (set to 1 or leave blank)",
         "value": "",
         "required": false
     },
-    "DDIST_CONFIG_COUNTRY": {
-        "description": "[CONFIG] The country to use for restricting search results (use values from https://raw.githubusercontent.com/benbusby/DDIST-search/develop/app/static/settings/countries.json)",
+    "DAMP_CONFIG_COUNTRY": {
+        "description": "[CONFIG] The country to use for restricting search results (use values from https://raw.githubusercontent.com/benbusby/DAMP-search/develop/app/static/settings/countries.json)",
         "value": "",
         "required": false
     },
-    "DDIST_CONFIG_LANGUAGE": {
-        "description": "[CONFIG] The language to use for the interface (use values from https://raw.githubusercontent.com/benbusby/DDIST-search/develop/app/static/settings/languages.json)",
+    "DAMP_CONFIG_LANGUAGE": {
+        "description": "[CONFIG] The language to use for the interface (use values from https://raw.githubusercontent.com/benbusby/DAMP-search/develop/app/static/settings/languages.json)",
         "value": "",
         "required": false
     },
-    "DDIST_CONFIG_SEARCH_LANGUAGE": {
-        "description": "[CONFIG] The language to use for search results (use values from https://raw.githubusercontent.com/benbusby/DDIST-search/develop/app/static/settings/languages.json)",
+    "DAMP_CONFIG_SEARCH_LANGUAGE": {
+        "description": "[CONFIG] The language to use for search results (use values from https://raw.githubusercontent.com/benbusby/DAMP-search/develop/app/static/settings/languages.json)",
         "value": "",
         "required": false
     },
-    "DDIST_CONFIG_DISABLE": {
+    "DAMP_CONFIG_DISABLE": {
         "description": "[CONFIG] Disable ability for client to change config (set to 1 or leave blank)",
         "value": "",
         "required": false
     },
-    "DDIST_CONFIG_BLOCK": {
+    "DAMP_CONFIG_BLOCK": {
         "description": "[CONFIG] Block websites from search results (comma-separated list)",
         "value": "",
         "required": false
     },
-    "DDIST_CONFIG_THEME": {
+    "DAMP_CONFIG_THEME": {
         "description": "[CONFIG] Set theme to 'dark', 'light', or 'system'",
         "value": "system",
         "required": false
     },
-    "DDIST_CONFIG_SAFE": {
+    "DAMP_CONFIG_SAFE": {
         "description": "[CONFIG] Use safe mode for searches (set to 1 or leave blank)",
         "value": "",
         "required": false
     },
-    "DDIST_CONFIG_ALTS": {
+    "DAMP_CONFIG_ALTS": {
         "description": "[CONFIG] Use social media alternatives (set to 1 or leave blank)",
         "value": "",
         "required": false
     },
-    "DDIST_CONFIG_NEAR": {
+    "DAMP_CONFIG_NEAR": {
         "description": "[CONFIG] Restrict results to only those near a particular city",
         "value": "",
         "required": false
     },
-    "DDIST_CONFIG_TOR": {
+    "DAMP_CONFIG_TOR": {
         "description": "[CONFIG] Use Tor, if available (set to 1 or leave blank)",
         "value": "",
         "required": false
     },
-    "DDIST_CONFIG_NEW_TAB": {
+    "DAMP_CONFIG_NEW_TAB": {
         "description": "[CONFIG] Always open results in new tab (set to 1 or leave blank)",
         "value": "",
         "required": false
     },
-    "DDIST_CONFIG_VIEW_IMAGE": {
+    "DAMP_CONFIG_VIEW_IMAGE": {
       "description": "[CONFIG] Enable View Image option (set to 1 or leave blank)",
       "value": "",
       "required": false
   },
-    "DDIST_CONFIG_GET_ONLY": {
+    "DAMP_CONFIG_GET_ONLY": {
         "description": "[CONFIG] Search using GET requests only (set to 1 or leave blank)",
         "value": "",
         "required": false
     },
-    "DDIST_CONFIG_STYLE": {
+    "DAMP_CONFIG_STYLE": {
         "description": "[CONFIG] Custom CSS styling (paste in CSS or leave blank)",
-        "value": ":root { /* LIGHT THEME COLORS */ --DDIST-background: #d8dee9; --DDIST-accent: #2e3440; --DDIST-text: #3B4252; --DDIST-contrast-text: #eceff4; --DDIST-secondary-text: #70757a; --DDIST-result-bg: #fff; --DDIST-result-title: #4c566a; --DDIST-result-url: #81a1c1; --DDIST-result-visited: #a3be8c; /* DARK THEME COLORS */ --DDIST-dark-background: #222; --DDIST-dark-accent: #685e79; --DDIST-dark-text: #fff; --DDIST-dark-contrast-text: #000; --DDIST-dark-secondary-text: #bbb; --DDIST-dark-result-bg: #000; --DDIST-dark-result-title: #1967d2; --DDIST-dark-result-url: #4b11a8; --DDIST-dark-result-visited: #bbbbff; }",
+        "value": ":root { /* LIGHT THEME COLORS */ --DAMP-background: #d8dee9; --DAMP-accent: #2e3440; --DAMP-text: #3B4252; --DAMP-contrast-text: #eceff4; --DAMP-secondary-text: #70757a; --DAMP-result-bg: #fff; --DAMP-result-title: #4c566a; --DAMP-result-url: #81a1c1; --DAMP-result-visited: #a3be8c; /* DARK THEME COLORS */ --DAMP-dark-background: #222; --DAMP-dark-accent: #685e79; --DAMP-dark-text: #fff; --DAMP-dark-contrast-text: #000; --DAMP-dark-secondary-text: #bbb; --DAMP-dark-result-bg: #000; --DAMP-dark-result-title: #1967d2; --DAMP-dark-result-url: #4b11a8; --DAMP-dark-result-visited: #bbbbff; }",
         "required": false
     }
   }

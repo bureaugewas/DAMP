@@ -1,7 +1,7 @@
 import requests
 import os
 
-
+'''
 #test get available endpoints
 response = requests.get('http://127.0.0.1:5000/metadata')
 print(response)
@@ -70,7 +70,7 @@ response = requests.delete('http://127.0.0.1:5000/api/delete',
                         json=body,
                         auth=(client_id, client_secret))
 print(response)
-print(response.text)
+print(response.text)'''
 
 
 #test get endpoint list function
