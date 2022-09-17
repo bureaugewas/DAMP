@@ -5,7 +5,7 @@ VALUES
 
 INSERT INTO endpoints (name, endpoint_base, data, availability, status, author_id, created, valid_json, daily_rate_limit)
 VALUES
-  ('test name', '/api/fetch/test_name', 'test' || x'0a' || 'data', 'Public', 'Active', 1, '2018-01-01 00:00:00', 0, 200),
+  ('test name', '/api/fetch/test_name', 'test', 'Public', 'Active', 1, '2018-01-01 00:00:00', 0, 200),
   ('test name 2', '/api/fetch/test_name_2', 'test2' || x'0a' || 'data', 'Public', 'Active', 2, '2018-01-01 00:00:00', 0, 200);
 
 INSERT INTO client_access (author_id, client_id, client_secret, endpoint_access_id, date_created, date_expiry, active,
