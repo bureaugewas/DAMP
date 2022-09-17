@@ -1,7 +1,7 @@
 import os
 import tempfile
-
 import pytest
+
 from app import create_app
 from app.db import get_db, init_db
 
@@ -37,6 +37,7 @@ def client(app):
 def runner(app):
     return app.test_cli_runner()
 
+
 class AuthActions(object):
     def __init__(self, client):
         self._client = client
@@ -49,7 +50,6 @@ class AuthActions(object):
 
     def logout(self):
         return self._client.get('/auth/logout')
-
 
 @pytest.fixture
 def auth(client):
