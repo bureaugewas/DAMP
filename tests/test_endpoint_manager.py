@@ -71,7 +71,7 @@ def test_token_generation(client, auth):
     assert b'Admin token - Client id:' in client.get('/auth/client_access').data
     assert b' Expiry: 2018-01-11 00:00:00'
 
-    # Test creating admin token
+    # Test creating api token
     client.post('/auth/client_access',
                 data={'submit': 'Generate',
                       'endpoint_access_id': 1,
@@ -91,6 +91,44 @@ def test_token_generation(client, auth):
 
     # Test absence of existing token
     assert b'Client id: test' not in client.get('/auth/client_access').data
+
+
+def test_token_access(app, client, auth):
+    auth.login()
+    # Test creating admin token
+    client.post('/auth/client_access',
+                data={'submit': 'Generate',
+                      'endpoint_access_id': 0,
+                      'access_limit': 10})
+
+    with app.app_context():
+        db = get_db()
+        access = db.execute('SELECT read_access, write_access, create_access, delete_access from client_access '
+                            'where endpoint_access_id = 0 and id = 2').fetchone()
+        db.commit()
+
+        assert access['read_access'] == 'TRUE'
+        assert access['write_access'] == 'TRUE'
+        assert access['create_access'] == 'TRUE'
+        assert access['delete_access'] == 'TRUE'
+
+    # Test creating api token
+    client.post('/auth/client_access',
+                data={'submit': 'Generate',
+                      'endpoint_access_id': 1,
+                      'access_limit': 20})
+
+    with app.app_context():
+        db = get_db()
+        access = db.execute(
+            'SELECT read_access, write_access, create_access, delete_access from client_access '
+            'where endpoint_access_id = 1 and id = 3').fetchone()
+        db.commit()
+
+        assert access['read_access'] == 'TRUE'
+        assert access['write_access'] == 'FALSE'
+        assert access['create_access'] == 'FALSE'
+        assert access['delete_access'] == 'FALSE'
 
 
 # Test absence of other users endpoints
