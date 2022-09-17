@@ -104,20 +104,19 @@ def login_required(view):
 @bp.route('/client_access', methods=('GET', 'POST'))
 @login_required
 def client_access():
-    cursor_generate = get_db().execute(
+    db = get_db()
+    cursor_generate = db.execute(
         'SELECT id, endpoint_base, availability FROM endpoints ',
         ()
     ).fetchall()
-    close_db()
 
-    cursor_delete = get_db().execute(
+    cursor_delete = db.execute(
         ' SELECT c.id as token_id, client_id, IFNULL(endpoint_base,\'Admin token\') as endpoint_base, '
         ' date(c.date_created) as date_created,'
         ' date(c.date_expiry) as date_expiry'
         ' FROM client_access c LEFT JOIN endpoints e ON e.id = c.endpoint_access_id',
         ()
     ).fetchall()
-    close_db()
 
     if request.method == 'POST' and request.form['submit'] == 'Generate':
         client_id = secrets.token_hex(16)
@@ -136,7 +135,6 @@ def client_access():
             create_access = 'TRUE'
             delete_access = 'TRUE'
 
-        db = get_db()
         error = None
 
         if not client_id and client_secret:
@@ -170,10 +168,10 @@ def client_access():
 
     elif request.method == 'POST' and request.form['submit'] == 'Delete':
         client_id = request.form['delete_token']
-        db = get_db()
         db.execute('DELETE FROM client_access WHERE client_id = ?', (client_id,))
         db.commit()
         flash('Deleted client token: ' + client_id)
         return redirect(url_for("auth.client_access"))
+    close_db()
 
     return render_template('auth/client_access.html', endpoints=cursor_generate, tokens=cursor_delete)

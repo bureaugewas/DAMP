@@ -1,5 +1,6 @@
 import os
 import json
+import limits.storage
 
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -25,7 +26,8 @@ def create_app(test_config=None):
     Limiter(
         app,
         key_func=get_remote_address,
-        default_limits=["200/day", "50/hour"]  # this is default limit set for app
+        default_limits=["200/day", "50/hour"],  # this is default limit set for app
+        storage_uri="memory://",
     )
 
     if test_config is None:

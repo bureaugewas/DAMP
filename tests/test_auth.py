@@ -40,12 +40,6 @@ def test_login(client, auth):
         assert g.user['username'] == 'test'
 
 
-''' #TODO: Test token generation      
-def test_token_generation(client, auth):
-    pass
-'''
-
-
 @pytest.mark.parametrize(('username', 'password', 'message'), (
     ('a', 'test', b'Incorrect username.'),
     ('test', 'a', b'Incorrect password.'),

@@ -56,7 +56,7 @@ def upload():
 
         if json_validation == '1' and not validate_json(data):
             error = 'Invalid json.'
-        else:
+        elif json_validation == '1' and validate_json(data):
             data = json.dumps(json.loads(data), indent=3)
 
         if not name:
@@ -83,13 +83,13 @@ def upload():
     return render_template('endpoint_manager/upload.html')
 
 
-def fetch_data(endpoint_id, check_author=True):
+def fetch_data(id, check_author=True):
     cursor = get_db().execute(
         'SELECT e.id, name, endpoint_base, data, availability, status, valid_json, '
         ' created, author_id, daily_rate_limit'
         ' FROM endpoints e JOIN user u ON e.author_id = u.id'
         ' WHERE e.id = ?',
-        (endpoint_id,)
+        (id,)
     ).fetchone()
     close_db()
 
@@ -104,8 +104,8 @@ def fetch_data(endpoint_id, check_author=True):
 
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
 @login_required
-def update(endpoint_id):
-    cursor = fetch_data(endpoint_id)
+def update(id):
+    cursor = fetch_data(id)
 
     if request.method == 'POST':
         name = request.form['name']
@@ -133,7 +133,7 @@ def update(endpoint_id):
                 'UPDATE endpoints SET name = ?, availability = ?, status = ?, endpoint_base = ?, data = ?, '
                 ' valid_json = ?, daily_rate_limit = ?'
                 ' WHERE id = ?',
-                (name, availability, status, endpoint_base, data, json_validation, daily_rate_limit, endpoint_id, )
+                (name, availability, status, endpoint_base, data, json_validation, daily_rate_limit, id, )
             )
             db.commit()
             return redirect(url_for('endpoint_manager.index'))
@@ -143,10 +143,10 @@ def update(endpoint_id):
 
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required
-def delete(endpoint_id):
-    fetch_data(endpoint_id)
+def delete(id):
+    fetch_data(id)
     db = get_db()
-    db.execute('DELETE FROM endpoints WHERE id = ?', (endpoint_id,))
+    db.execute('DELETE FROM endpoints WHERE id = ?', (id,))
     db.commit()
     return redirect(url_for('endpoint_manager.index'))
 

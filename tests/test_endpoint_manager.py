@@ -42,38 +42,64 @@ def test_author_required(app, client, auth):
 
 
 @pytest.mark.parametrize('path', (
-    '/2/update',
-    '/2/delete',
+    '/3/update',
+    '/3/delete',
 ))
 def test_exists_required(client, auth, path):
     auth.login()
     assert client.post(path).status_code == 404
 
 
-'''
-def test_author_required(app, client, auth):
-    # change the post author to another user
-    with app.app_context():
-        db = get_db()
-        db.execute('UPDATE endpoints SET author_id = 2 WHERE id = 1')
-        db.commit()
-
+def test_token_generation(client, auth):
     auth.login()
-    # current user can't modify other user's post
-    assert client.post('/1/update').status_code == 403
-    assert client.post('/1/delete').status_code == 403
-    # current user doesn't see edit link
-    assert b'href="/1/update"' not in client.get('/').data
-'''
+    assert client.get('/auth/client_access').status_code == 200
+
+    # Check if Admin option is displayed
+    assert b'<option value="0">' in client.get('/auth/client_access').data
+    assert b'Admin' in client.get('/auth/client_access').data
+
+    # Check if api option is displayed
+    assert b'<option value="1">' in client.get('/auth/client_access').data
+    assert b'/api/fetch/test_name (Public)' in client.get('/auth/client_access').data
+
+    # Test creating admin token
+    client.post('/auth/client_access',
+                data={'submit': 'Generate',
+                      'endpoint_access_id': 0,
+                      'access_limit': 10})
+
+    assert b'Admin token - Client id:' in client.get('/auth/client_access').data
+    assert b' Expiry: 2018-01-11 00:00:00'
+
+    # Test creating admin token
+    client.post('/auth/client_access',
+                data={'submit': 'Generate',
+                      'endpoint_access_id': 1,
+                      'access_limit': 20})
+
+    assert b'/api/fetch/test_name - Client id:' in client.get('/auth/client_access').data
+    assert b' Expiry: 2018-01-21 00:00:00'
+
+    # Test presence of existing token
+    assert b'Client id: test' in client.get('/auth/client_access').data
+
+    # Test delete existing token
+    client.post('/auth/client_access',
+                data={'submit': 'Delete',
+                      'delete_token': 'test',
+                      'access_limit': 10})
+
+    # Test absence of existing token
+    assert b'Client id: test' not in client.get('/auth/client_access').data
 
 
-@pytest.mark.parametrize('path', (
-    '/2/update',
-    '/2/delete',
-))
-def test_exists_required(client, auth, path):
+# Test absence of other users endpoints
+def test_user_endpoints(client, auth):
     auth.login()
-    assert client.post(path).status_code == 404
+    response = client.get('/')
+
+    assert b'/api/fetch/test_name' in response.data
+    assert b'/api/fetch/test_name_2' not in response.data
 
 
 def test_delete(client, auth, app):
@@ -85,3 +111,4 @@ def test_delete(client, auth, app):
         db = get_db()
         post = db.execute('SELECT * FROM endpoints WHERE id = 1').fetchone()
         assert post is None
+
