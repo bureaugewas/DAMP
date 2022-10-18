@@ -39,7 +39,7 @@ def index():
         (g.user['id'],)
     ).fetchall()
     return render_template('endpoint_manager/index.html', endpoints=cursor)
-
+#TODO: disable request limit for admin
 
 @bp.route('/upload', methods=('GET', 'POST'))
 @login_required
