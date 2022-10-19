@@ -94,9 +94,9 @@ print(response)
 5. Deleting will delete an existing endpoint using a DELETE method:
 
 ```
-headers = {'Content-type': 'application/json'}. 
-body = {"name":"<name>"} OR. 
-body = {"endpoint":"/api/fetch/<name>"}. 
+headers = {'Content-type': 'application/json'}  
+body = {"name":"<name>"} OR  
+body = {"endpoint":"/api/fetch/<name>"}  
 ```
 
 6. Add the headers and body to the request and run the Python script:
@@ -105,7 +105,7 @@ body = {"endpoint":"/api/fetch/<name>"}.
 response = requests.delete('http://127.0.0.1:5000/api/delete',  
                         headers=headers,  
                         json=body,  
-                        auth=(client_id, client_secret)). 
+                        auth=(client_id, client_secret))  
 print(response)
 ```
 
