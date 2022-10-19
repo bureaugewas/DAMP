@@ -16,8 +16,6 @@ https://github.com/users/bureaugewas/projects/5
 2. Set the DAMP project as environment.
 3. Run the following commands in terminal:
 
-test
-
 ```flask init-db```
 
 ```flask run```
