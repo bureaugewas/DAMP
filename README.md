@@ -16,9 +16,9 @@ https://github.com/users/bureaugewas/projects/5
 2. Set the DAMP project as environment.
 3. Run the following commands in terminal:
 
-```flask init-db```
+        flask init-db
 
-```flask run```
+        flask run
 
 4. Open the app by going to: http://127.0.0.1:5000/
 5. Register a user and log in.
@@ -32,34 +32,27 @@ Endpoints can be created, updated or deleted using Post, Put and Delete methods.
 3. Select the amount of days you want the token to have access
 4. Paste the client_id and client_secret in the following Python script
 
-```
-client_id = os.environ.get("CLIENT_ID","<Client_id>")
-client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
-```
-
+        client_id = os.environ.get("CLIENT_ID","<Client_id>")
+        client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
 
 ## Uploading data via POST method
 5. Uploading will create a new endpoint using a POST method (Paremeter description down below):
 
-```
-headers = {'Content-type': 'application/json'}
-body = {"name":"<name>",
-        "status":"Active",
-        "availability":"Public",
-        "daily_rate_limit":200,
-        "json_validation":"1",
-        "data":{"test":1,"test2":2}}
-```
+        headers = {'Content-type': 'application/json'}
+        body = {"name":"<name>",
+                "status":"Active",
+               "availability":"Public",
+               "daily_rate_limit":200,
+               "json_validation":"1",
+               "data":{"test":1,"test2":2}}
 
 6. Add the headers and body to the request and run the Python script:
 
-```
-response = requests.post('http://127.0.0.1:5000/api/upload',
-                        headers=headers,
-                        json=body,
-                        auth=(client_id, client_secret))
-print(response)
-```
+        response = requests.post('http://127.0.0.1:5000/api/upload',
+                                headers=headers,
+                                json=body,
+                               auth=(client_id, client_secret))
+        print(response)
 
 7. The newly created endpoint should now appear in the user interface
 
@@ -67,25 +60,21 @@ print(response)
 ## Updating data via PUT method
 5. Updating will update an existing endpoint using a PUT method:
 
-```
-headers = {'Content-type': 'application/json'}
-body = {"name":"<name>",
-        "status":"Active",
-        "availability":"Private",
-        "json_validation":0,
-        "daily_rate_limit":10,
-        "data": "Non Json data"}
-```
+        headers = {'Content-type': 'application/json'}
+        body = {"name":"<name>",
+                "status":"Active",
+               "availability":"Private",
+               "json_validation":0,
+               "daily_rate_limit":10,
+              "data": "Non Json data"}
 
 6. Add the headers and body to the request and run the Python script:
 
-```
-response = requests.put('http://127.0.0.1:5000/api/update',
-                        headers=headers,
-                        json=body,
-                        auth=(client_id, client_secret))
-print(response)
-```
+        response = requests.put('http://127.0.0.1:5000/api/update',
+                               headers=headers,
+                               json=body,
+                               auth=(client_id, client_secret))
+        print(response)
 
 7. The changes to the endpoint should now appear in the user interface
 
@@ -93,11 +82,9 @@ print(response)
 ## Deleteting data via DELETE method
 5. Deleting will delete an existing endpoint using a DELETE method:
 
-```
-headers = {'Content-type': 'application/json'}  
-body = {"name":"<name>"} OR  
-body = {"endpoint":"/api/fetch/<name>"}  
-```
+        headers = {'Content-type': 'application/json'}  
+        body = {"name":"<name>"} OR  
+        body = {"endpoint":"/api/fetch/<name>"}  
 
 6. Add the headers and body to the request and run the Python script:
 
