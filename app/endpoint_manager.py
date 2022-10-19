@@ -1,5 +1,6 @@
 import json
 import basicauth
+import markdown
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
@@ -40,6 +41,14 @@ def index():
     ).fetchall()
     return render_template('endpoint_manager/index.html', endpoints=cursor)
 #TODO: disable request limit for admin
+
+@bp.route('/documentation')
+@login_required
+def documentation():
+    with open('README.md', 'r') as f:
+        text = f.read()
+        mkd_text = markdown.markdown(text)
+    return render_template('endpoint_manager/documentation.html', mkd_text=mkd_text)
 
 @bp.route('/upload', methods=('GET', 'POST'))
 @login_required

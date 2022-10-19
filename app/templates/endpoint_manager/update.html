@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block name %}Edit "{{ endpoint['name'] }}"{% endblock %}</h1>
+  <h1 class='header'>{% block title %}Edit "{{ endpoint['name'] }}"{% endblock %}</h1>
+  <p class='header'>Manage endpoint settings. Check out the <a href="">documentation</a> page for more information.</p>
 {% endblock %}
 
 {% block content %}
+<article class="page">
   <form method="post">
     <label for="name">Name</label>
     <input name="name" id="name"
@@ -44,4 +46,5 @@
   <form action="{{ url_for('endpoint_manager.delete', id=endpoint['id']) }}" method="post">
     <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
   </form>
+</article>
 {% endblock %}

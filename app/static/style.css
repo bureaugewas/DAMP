@@ -1,8 +1,8 @@
 html { font-family: helvetica; background: #0d1117; }
 body { margin: 0 auto; background: #0d1117; padding-bottom: 40px; }
 h1 { font-family: helvetica; font-weight: bold; color: #5c9bca; margin: 0 0; }
-a { color: white; }
-hr { border: none; border-top: 1px solid lightgray; }
+a { color: #5c9bca; }
+hr { border: none; border-top: 1px solid lightgray; margin-bottom: 1.5em }
 nav { height: 80px; background: #161b22; display: flex; align-items: center; padding: 0 2rem; }
 nav img#header-logo{ height:40px; width:40px }
 nav h1 { margin-left: 1rem; }
@@ -10,7 +10,7 @@ nav h1 a { text-decoration: none; padding: 0.25rem 0.5rem; }
 
 nav ul  { display: flex; list-style: none; margin: 0; padding: 0; }
 nav ul li a { text-decoration: none; }
-nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
+nav ul li a, nav ul li span, header .action { color: white; display: block; padding: 0.5rem; }
 nav ul.nav {   margin-left: 20px; }
 nav ul.auth {   margin-left: auto; order: 2;}
 
@@ -27,9 +27,9 @@ p.header { font-size: 0.75rem; color: #b2b2b2; font-style: italic; margin: 0px;}
 .page > header > div p { font-family: Charter; font-size: 0.7rem; padding: 0.3rem 1rem; margin: 0 0 0.3rem 0; border: 1px solid lightgray; border-radius: 10px; }
 .page > header > div:first-of-type {  }
 .page > header > div:last-of-type { justify-content: end; margin-left: auto; }
-.page > header a.action { color: #5c9bca; margin: 0 0 0 1rem; }
+.page > header a.action { color: #5c9bca; font-size: 0.9em; margin: 0 0 0 1rem; }
 .page > header h1 { font-size: 1.5em; margin-bottom: 0; }
-.page > header h1 a { color: #5c9bca; font-weight: 400; font-size: 0.75em; margin-bottom: 0; }
+.page > header h1 a {  font-weight: 400; font-size: 0.75em; margin-bottom: 0; }
 
 .page .about { color: slategray; font-style: italic; font-size:12px; margin: 0 0 0 15px}
 .page .about span{ color: white; font-style: normal; font-size:14px; }
@@ -46,4 +46,24 @@ p.header { font-size: 0.75rem; color: #b2b2b2; font-style: italic; margin: 0px;}
 input.danger { color: #cc2f2e; }
 
 input[type=submit] { align-self: start; min-width: 10em; }
-input[type=checkbox] {float:left; width: 1.0rem}
+input[type=checkbox] { float:left; width: 1.0rem}
+
+pre { padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #161b22;
+    border-radius: 6px; }
+
+.doc p { font-size: 16px; font-weight: 400; }
+
+.doc ol li { font-size: 16px }
+
+.doc p:has(code) {
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #161b22;
+    border-radius: 6px;
+    }
