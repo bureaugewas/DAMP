@@ -16,8 +16,8 @@ https://github.com/users/bureaugewas/projects/5
 2. Set the DAMP project as environment.
 3. Run the following commands in terminal:
 
-        flask init-db
 
+        flask init-db
         flask run
 
 4. Open the app by going to: http://127.0.0.1:5000/
