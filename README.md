@@ -15,8 +15,11 @@ https://github.com/users/bureaugewas/projects/5
 1. Clone the repository.
 2. Set the DAMP project as environment.
 3. Run the following commands in terminal:
+
 ```flask init-db```
+
 ```flask run```
+
 4. Open the app by going to: http://127.0.0.1:5000/
 5. Register a user and log in.
 
@@ -28,6 +31,7 @@ Endpoints can be created, updated or deleted using Post, Put and Delete methods.
 2. Select 'Generate token for:' and choose 'Admin'
 3. Select the amount of days you want the token to have access
 4. Paste the client_id and client_secret in the following Python script
+
 ```
 client_id = os.environ.get("CLIENT_ID","<Client_id>")
 client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
@@ -36,6 +40,7 @@ client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
 
 ## Uploading data via POST method
 5. Uploading will create a new endpoint using a POST method (Paremeter description down below):
+
 ```
 headers = {'Content-type': 'application/json'}
 body = {"name":"<name>",
@@ -45,7 +50,9 @@ body = {"name":"<name>",
         "json_validation":"1",
         "data":{"test":1,"test2":2}}
 ```
+
 6. Add the headers and body to the request and run the Python script:
+
 ```
 response = requests.post('http://127.0.0.1:5000/api/upload',
                         headers=headers,
@@ -53,11 +60,13 @@ response = requests.post('http://127.0.0.1:5000/api/upload',
                         auth=(client_id, client_secret))
 print(response)
 ```
+
 7. The newly created endpoint should now appear in the user interface
 
 
 ## Updating data via PUT method
 5. Updating will update an existing endpoint using a PUT method:
+
 ```
 headers = {'Content-type': 'application/json'}
 body = {"name":"<name>",
@@ -67,7 +76,9 @@ body = {"name":"<name>",
         "daily_rate_limit":10,
         "data": "Non Json data"}
 ```
+
 6. Add the headers and body to the request and run the Python script:
+
 ```
 response = requests.put('http://127.0.0.1:5000/api/update',
                         headers=headers,
@@ -75,17 +86,21 @@ response = requests.put('http://127.0.0.1:5000/api/update',
                         auth=(client_id, client_secret))
 print(response)
 ```
+
 7. The changes to the endpoint should now appear in the user interface
 
 
 ## Deleteting data via DELETE method
 5. Deleting will delete an existing endpoint using a DELETE method:
+
 ```
 headers = {'Content-type': 'application/json'}
 body = {"name":"<name>"} OR
 body = {"endpoint":"/api/fetch/<name>"}
 ```
+
 6. Add the headers and body to the request and run the Python script:
+
 ```
 response = requests.delete('http://127.0.0.1:5000/api/delete',
                         headers=headers,
@@ -93,6 +108,7 @@ response = requests.delete('http://127.0.0.1:5000/api/delete',
                         auth=(client_id, client_secret))
 print(response)
 ```
+
 7. The endpoint should now dissapear from the user interface
 
 
