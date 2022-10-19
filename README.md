@@ -102,10 +102,10 @@ body = {"endpoint":"/api/fetch/<name>"}
 6. Add the headers and body to the request and run the Python script:
 
 ```
-response = requests.delete('http://127.0.0.1:5000/api/delete',  
-                        headers=headers,  
-                        json=body,  
-                        auth=(client_id, client_secret))  
+response = requests.delete('http://127.0.0.1:5000/api/delete',<br />
+                        headers=headers,<br />
+                        json=body,<br />
+                        auth=(client_id, client_secret))<br />
 print(response)
 ```
 
