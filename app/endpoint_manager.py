@@ -59,7 +59,8 @@ def upload():
         data = request.form['data']
         availability = request.form['availability']
         status = request.form['status']
-        json_validation = request.form['json_validation']
+        json_validation = request.form['data_type']
+        print(json_validation)
         daily_rate_limit = request.form['daily_rate_limit']
         error = None
 
@@ -122,13 +123,13 @@ def update(id):
         data = request.form['data']
         availability = request.form['availability']
         status = request.form['status']
-        json_validation = request.form['json_validation']
+        json_validation = request.form['data_type']
         daily_rate_limit = request.form['daily_rate_limit']
         error = None
 
         if json_validation == '1' and not validate_json(data):
             error = 'Invalid json.'
-        else:
+        elif json_validation == '1' and validate_json(data):
             data = json.dumps(json.loads(data), indent=3)
 
         if not name:

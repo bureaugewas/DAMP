@@ -15,9 +15,11 @@
     <label for="data">Data</label>
     <textarea name="data" id="data">{{ request.form['data'] }}</textarea>
 
-    <label for="json_validation">JSON validation</label>
-    <input type='hidden' value='0' name='json_validation'>
-    <input type="checkbox" id="json_validation" name="json_validation" value="1" checked>
+    <label for="data_type">Datatype validation</label>
+    <select name="data_type" id="data_type" required>
+      <option value="0" selected>none</option>
+      <option value="1">json</option>
+    </select>
 
      <!--input type = "file" name = "file" /-->
     <label for="availability">Set privacy level</label>
