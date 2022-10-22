@@ -3,6 +3,7 @@ python-dotenv
 flask-httpauth
 flask_limiter
 Flask-Session
+flask_misaka
 jwt
 basicauth
 markdown
