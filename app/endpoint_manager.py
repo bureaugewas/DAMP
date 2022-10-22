@@ -43,7 +43,6 @@ def index():
 #TODO: disable request limit for admin
 
 
-#TODO: Add link to documentation
 @bp.route('/documentation')
 @login_required
 def documentation():
@@ -51,6 +50,7 @@ def documentation():
         text = f.read()
         mkd_text = markdown.markdown(text)
     return render_template('endpoint_manager/documentation.html', mkd_text=mkd_text)
+
 
 @bp.route('/upload', methods=('GET', 'POST'))
 @login_required
@@ -229,7 +229,7 @@ def api_fetch(name):
         cursor = fetch_data(fetch_id['id'], check_author=False)
         return cursor['data']
     else:
-        return error, 401
+        return 401
 
 
 @bp.route('/api/upload', methods=('POST',))
@@ -332,7 +332,6 @@ def api_update():
         (client_id,)
     ).fetchone()
 
-
     if access is None:
         close_db()
         return 'Client not authorised.', 401
@@ -343,7 +342,7 @@ def api_update():
     # Check if endpoint exists
     db = get_db()
 
-        # Check response for values
+    # Check response for values
     if 'name' not in request.get_json():
         close_db()
         return 'ValueError: name missing.', 400
