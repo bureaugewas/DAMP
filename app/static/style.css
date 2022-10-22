@@ -57,6 +57,7 @@ pre { padding: 16px;
     border-radius: 6px; }
 
 .doc p { font-size: 16px; font-weight: 400; }
+.doc h1 { font-size: 32px; }
 
 .doc ol li { font-size: 16px }
 

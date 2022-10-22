@@ -2,7 +2,7 @@
 
 {% block header %}
   <h1 class='header'>{% block title %}New endpoint{% endblock %}</h1>
-  <p class='header'>Create a new endpoint. Check out the <a href="">documentation</a> page for more information.</p>
+  <p class='header'>Create a new endpoint. Check out the <a href="{{ url_for('endpoint_manager.documentation') }}">documentation</a> page for more information.</p>
 
 {% endblock %}
 

@@ -2,7 +2,7 @@
 
 {% block header %}
   <h1 class='header'>{% block title %}Home{% endblock %}</h1>
-  <p class='header'>Create new endpoints, check your endpoint status or change endpoint settings via edit. Check out the <a href="">documentation</a> page for more information.</p>
+  <p class='header'>Create new endpoints, check your endpoint status or change endpoint settings via edit. Check out the <a href="{{ url_for('endpoint_manager.documentation') }}">documentation</a> page for more information.</p>
 {% endblock %}
 
 {% block content %}

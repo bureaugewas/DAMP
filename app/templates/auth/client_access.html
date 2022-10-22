@@ -2,7 +2,7 @@
 
 {% block header %}
   <h1 class='header'>{% block title %}Client access{% endblock %}</h1>
-  <p class='header'>Create and manage access tokens for yourself and for others. Check out the <a href="">documentation</a> page for more information.</p>
+  <p class='header'>Create and manage access tokens for yourself and for others. Check out the <a href="{{ url_for('endpoint_manager.documentation') }}">documentation</a> page for more information.</p>
 {% endblock %}
 
 {% block content %}

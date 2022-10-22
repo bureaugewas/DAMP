@@ -42,6 +42,8 @@ def index():
     return render_template('endpoint_manager/index.html', endpoints=cursor)
 #TODO: disable request limit for admin
 
+
+#TODO: Add link to documentation
 @bp.route('/documentation')
 @login_required
 def documentation():
