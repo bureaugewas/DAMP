@@ -1,6 +1,8 @@
 # Decentralized API Management Platform (DAMP) V1.1
 
-DAMP is a Node Based Distributed Data Interfacing System. It's a node-based decentralized app (ndapp) for quickly spinning up and hosting Application Programming Interfaces (APIs). The goal is to eventually Dockerize this project and make it available on Umbrel OS and other Node Operating Systems. Use cases for this application are accountless logins-, decentralized product hosting for retail/shop platforms and decentralized social media platforms. Interested in collaborating, but don't know where to start?
+DAMP is a Node Based Distributed Data Interfacing System. It's a node-based decentralized app (ndapp) for quickly spinning up and hosting Application Programming Interfaces (APIs). The goal is to eventually Dockerize this project and make it available on Umbrel OS and other Node Operating Systems. Use cases for this application are accountless logins-, decentralized product hosting for retail/shop platforms and decentralized social media platforms. 
+
+Interested in collaborating, but don't know where to start?
 Visit the discussion page to suggest a feature, share your vision or ask questions about the project:
 https://github.com/bureaugewas/DAMP/discussions
 
