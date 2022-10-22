@@ -1,10 +1,6 @@
 # Decentralized API Management Platform (DAMP) V1.1
 
-*** In Development ***
-
-DAMP is a Node Based Distributed Data Interfacing System. It's a node-based decentralized app (ndapp) for quickly spinning up and hosting Application Programming Interfaces (APIs). The goal is to eventually Dockerize this project and make it available on Umbrel OS and other Node Operating Systems. Use cases for this application are accountless logins-, decentralized product hosting for retail/shop platforms and decentralized social media platforms.
-
-Interested in collaborating, but don't know where to start?
+DAMP is a Node Based Distributed Data Interfacing System. It's a node-based decentralized app (ndapp) for quickly spinning up and hosting Application Programming Interfaces (APIs). The goal is to eventually Dockerize this project and make it available on Umbrel OS and other Node Operating Systems. Use cases for this application are accountless logins-, decentralized product hosting for retail/shop platforms and decentralized social media platforms. Interested in collaborating, but don't know where to start?
 Visit the discussion page to suggest a feature, share your vision or ask questions about the project:
 https://github.com/bureaugewas/DAMP/discussions
 
@@ -106,19 +102,6 @@ Endpoints can be created, updated or deleted using Post, Put and Delete methods.
         json_validation (0/1):          Will validate whether your data contains valid json.
         data:                           The data you want to make available via your endpoint. Can be plain text or json.
 
-
-# User interface
-Login page
-
-<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190216013-bbf25e70-1395-4126-a8ca-8fe61e70adb3.png">
-
-Endpoint manager
-
-<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190215379-25f3b202-2780-42ad-bfa9-2027a86f6d3c.png">
-
-Token generation
-
-<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190215958-45ac1eed-7a7a-463e-a683-ad64012fe222.png">
 
 
 # Future versions
