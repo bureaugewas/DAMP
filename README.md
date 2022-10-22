@@ -31,8 +31,9 @@ https://github.com/users/bureaugewas/projects/5
     
 4. Run the docker application:
 
-    docker run -d -p 5000:5000 --name damp-app damp
-Visit: http://127.0.0.1:5000/
+    docker run -d -p 5000:5000 --name damp-v1.1 damp
+
+Open the application via: http://127.0.0.1:5000/
 
 
 # Endpoint Commands
