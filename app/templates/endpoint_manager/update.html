@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block name %}Edit "{{ endpoint['name'] }}"{% endblock %}</h1>
+  <h1 class='header'>{% block title %}Edit "{{ endpoint['name'] }}"{% endblock %}</h1>
+  <p class='header'>Manage endpoint settings. Check out the <a href="{{ url_for('endpoint_manager.documentation') }}">documentation</a> page for more information.</p>
 {% endblock %}
 
 {% block content %}
+<article class="page">
   <form method="post">
     <label for="name">Name</label>
     <input name="name" id="name"
@@ -13,13 +15,17 @@
     <label for="data">Data</label>
     <textarea name="data" id="data">{{ request.form['data'] or endpoint['data'] }}</textarea>
 
-    <label for="json_validation">JSON validation</label>
-    {% if endpoint['valid_json'] == 1 %}
-    <input type="checkbox" id="json_validation" name="json_validation" value="1" checked>
-    {% else %}
-    <input type='checkbox' id="json_validation" name='json_validation' value="1" >
-    {% endif %}
-    <input type='hidden' value='0' name='json_validation'>
+    <label for="data_type">Datatype validation</label>
+    <select name="data_type" id="data_type" required>
+    <label for="data_type">JSON validation</label>
+      {% if endpoint['valid_json'] == 1 %}
+      <option value="0">none</option>
+      <option value="1" selected>json</option>
+      {% else %}
+      <option value="0" selected>none</option>
+      <option value="1">json</option>
+      {% endif %}
+    </select>
 
     <label for="availability">Set privacy level</label>
     <select name="availability" id="availability" required>
@@ -44,4 +50,5 @@
   <form action="{{ url_for('endpoint_manager.delete', id=endpoint['id']) }}" method="post">
     <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
   </form>
+</article>
 {% endblock %}

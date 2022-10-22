@@ -1,34 +1,47 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Endpoints{% endblock %}</h1>
-  {% if g.user %}
-    <a class="action" href="{{ url_for('endpoint_manager.upload') }}">New</a>
-  {% endif %}
+  <h1 class='header'>{% block title %}Home{% endblock %}</h1>
+  <p class='header'>Create new endpoints, check your endpoint status or change endpoint settings via edit. Check out the <a href="{{ url_for('endpoint_manager.documentation') }}">documentation</a> page for more information.</p>
 {% endblock %}
 
 {% block content %}
-  {% for endpoint in endpoints %}
-    <article class="endpoint">
+
+    <article class="page home">
+      {% for endpoint in endpoints %}
       <header>
         <div>
           <h1>
             {% if endpoint['status'] == "Active" %}
-              <span style="height: 12px; width: 12px; background-color: #06c91d; border-radius: 50%; display: inline-block;" class="dot"></span>
+              <span style="height: 9px; width: 9px; background-color: #06c91d; border-radius: 50%; display: inline-block;" class="dot"></span>
             {% else %}
-              <span style="height: 12px; width: 12px; background-color: #bbb; border-radius: 50%; display: inline-block;" class="dot"></span>
+              <span style="height: 9px; width: 9px; background-color: #bbb; border-radius: 50%; display: inline-block;" class="dot"></span>
             {% endif %}
-            <a href="{{ endpoint['endpoint_base'] }}">{{ endpoint['endpoint_base'] }}</a> ({{ endpoint['availability'] }})</h1>
-          <div class="about">by {{ endpoint['username'] }} on {{ endpoint['created'].strftime('%Y-%m-%d') }}</div>
+            <a href="{{ endpoint['endpoint_base'] }}">{{ endpoint['endpoint_base'] }}</a></h1>
+        <div class="about"><span>{{ endpoint['username'] }}</span> created on {{ endpoint['created'].strftime('%Y-%m-%d') }}</div>
+        </div>
+        <div>
+          {% if endpoint['availability'] == "Public" %}
+          <p>{{ endpoint['availability'] }}</p>
+          {% else %}
+          <p style="color:gray;">{{ endpoint['availability'] }}</p>
+          {% endif %}
         </div>
         {% if g.user['id'] == endpoint['author_id'] %}
+        <div>
           <a class="action" href="{{ url_for('endpoint_manager.update', id=endpoint['id']) }}">Edit</a>
+        </div>
         {% endif %}
+
       </header>
-      <p class="body">{{ endpoint['data'] }}</p>
+      {% endfor %}
+      {% if g.user %}
+      <header>
+        <a class="action" href="{{ url_for('endpoint_manager.upload') }}">Create new</a>
+      </header>
+      {% endif %}
     </article>
-    {% if not loop.last %}
-      <hr>
-    {% endif %}
-  {% endfor %}
+
+
+
 {% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1 class='header'>{% block title %}Documentation{% endblock %}</h1>
+  <p class='header'>How to use the DAMP UI and HTTP requests.</p>
+
+{% endblock %}
+
+{% block content %}
+<article class="page doc">
+  {{ mkd_text|markdown }}
+</article>
+{% endblock %}
