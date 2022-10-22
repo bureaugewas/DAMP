@@ -1,10 +1,6 @@
 # Decentralized API Management Platform (DAMP) V1.1
 
-*** In Development ***
-
-DAMP is a Node Based Distributed Data Interfacing System. It's a node-based decentralized app (ndapp) for quickly spinning up and hosting Application Programming Interfaces (APIs). The goal is to eventually Dockerize this project and make it available on Umbrel OS and other Node Operating Systems. Use cases for this application are accountless logins-, decentralized product hosting for retail/shop platforms and decentralized social media platforms.
-
-Interested in collaborating, but don't know where to start?
+DAMP is a Node Based Distributed Data Interfacing System. It's a node-based decentralized app (ndapp) for quickly spinning up and hosting Application Programming Interfaces (APIs). The goal is to eventually Dockerize this project and make it available on Umbrel OS and other Node Operating Systems. Use cases for this application are accountless logins-, decentralized product hosting for retail/shop platforms and decentralized social media platforms. Interested in collaborating, but don't know where to start?
 Visit the discussion page to suggest a feature, share your vision or ask questions about the project:
 https://github.com/bureaugewas/DAMP/discussions
 
@@ -23,6 +19,18 @@ https://github.com/users/bureaugewas/projects/5
 
 4. Open the app by going to: http://127.0.0.1:5000/
 5. Register a user and log in.
+
+# Dockerizing the Application
+1. Download and install Docker from https://www.docker.com/
+2. Clone the project and open it in your favorite IDE
+3. Build the Docker Image (e.g. from your Pycharm terminal):
+
+    docker build -t damp .
+    
+4. Run the docker application:
+
+    docker run -d -p 5000:5000 --name damp-app damp
+Visit: http://127.0.0.1:5000/
 
 
 # Endpoint Commands
@@ -52,7 +60,7 @@ Endpoints can be created, updated or deleted using Post, Put and Delete methods.
         response = requests.post('http://127.0.0.1:5000/api/upload',
                                 headers=headers,
                                 json=body,
-                               auth=(client_id, client_secret))
+                                auth=(client_id, client_secret))
         print(response)
 
 7. The newly created endpoint should now appear in the user interface
@@ -106,19 +114,6 @@ Endpoints can be created, updated or deleted using Post, Put and Delete methods.
         json_validation (0/1):          Will validate whether your data contains valid json.
         data:                           The data you want to make available via your endpoint. Can be plain text or json.
 
-
-# User interface
-Login page
-
-<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190216013-bbf25e70-1395-4126-a8ca-8fe61e70adb3.png">
-
-Endpoint manager
-
-<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190215379-25f3b202-2780-42ad-bfa9-2027a86f6d3c.png">
-
-Token generation
-
-<img width="650" alt="image" src="https://user-images.githubusercontent.com/78079422/190215958-45ac1eed-7a7a-463e-a683-ad64012fe222.png">
 
 
 # Future versions
