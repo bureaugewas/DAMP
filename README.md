@@ -14,7 +14,6 @@ https://github.com/users/bureaugewas/projects/5
 2. Set the DAMP project as environment.
 3. Run the following commands in terminal:
 
-
 ```flask init-db```
 
 ```flask run```
@@ -43,6 +42,11 @@ Endpoints can be created, updated or deleted using Post, Put and Delete methods.
 2. Select 'Generate token for:' and choose 'Admin'
 3. Select the amount of days you want the token to have access
 4. Paste the client_id and client_secret in the following Python script
+
+```
+client_id = os.environ.get("CLIENT_ID","<Client_id>")
+client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
+```
 
         client_id = os.environ.get("CLIENT_ID","<Client_id>")
         client_secret = os.environ.get("CLIENT_SECRET","<Client_secret>")
@@ -88,6 +92,7 @@ Endpoints can be created, updated or deleted using Post, Put and Delete methods.
                                auth=(client_id, client_secret))
         print(response)
 
+
 7. The changes to the endpoint should now appear in the user interface
 
 
@@ -105,6 +110,7 @@ Endpoints can be created, updated or deleted using Post, Put and Delete methods.
                                 json=body,
                                 auth=(client_id, client_secret))
         print(response)
+
 
 7. The endpoint should now dissapear from the user interface
 
