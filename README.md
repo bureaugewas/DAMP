@@ -20,6 +20,18 @@ https://github.com/users/bureaugewas/projects/5
 4. Open the app by going to: http://127.0.0.1:5000/
 5. Register a user and log in.
 
+# Dockerizing the Application
+1. Download and install Docker from https://www.docker.com/
+2. Clone the project and open it in your favorite IDE
+3. Build the Docker Image (e.g. from your Pycharm terminal):
+
+    docker build -t damp .
+    
+4. Run the docker application:
+
+    docker run -d -p 5000:5000 --name damp-app damp
+Visit: http://127.0.0.1:5000/
+
 
 # Endpoint Commands
 Endpoints can be created, updated or deleted using Post, Put and Delete methods. The following steps describe how this is done:
@@ -48,7 +60,7 @@ Endpoints can be created, updated or deleted using Post, Put and Delete methods.
         response = requests.post('http://127.0.0.1:5000/api/upload',
                                 headers=headers,
                                 json=body,
-                               auth=(client_id, client_secret))
+                                auth=(client_id, client_secret))
         print(response)
 
 7. The newly created endpoint should now appear in the user interface
