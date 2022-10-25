@@ -6,6 +6,6 @@ COPY . .
 
 RUN pip install --no-cache-dir -r requirements.txt; flask init-db
 
-EXPOSE 5000
+EXPOSE 
 
 CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"]
