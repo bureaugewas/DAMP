@@ -4,6 +4,7 @@ import limits.storage
 
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_misaka import Misaka
 
 from flask import (
     Flask, session, Blueprint, flash, g, redirect, render_template, request, url_for
@@ -29,6 +30,9 @@ def create_app(test_config=None):
         default_limits=["200/day", "50/hour"],  # this is default limit set for app
         storage_uri="memory://",
     )
+
+    #Markdown in documentation page
+    Misaka(app)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing

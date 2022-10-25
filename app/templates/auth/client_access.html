@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Generate client access token{% endblock %}</h1>
+  <h1 class='header'>{% block title %}Client access{% endblock %}</h1>
+  <p class='header'>Create and manage access tokens for yourself and for others. Check out the <a href="{{ url_for('endpoint_manager.documentation') }}">documentation</a> page for more information.</p>
 {% endblock %}
 
 {% block content %}
+
+<article class="page">
   <form method="post">
     <label for="endpoint_access_id">Generate token for:</label>
     <select name="endpoint_access_id" id="endpoint_access_id" required>
@@ -37,6 +40,7 @@
 
     <input type="submit" name="submit" value="Delete">
   </form>
+</article>
 {% endblock %}
 
 

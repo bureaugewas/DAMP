@@ -1,5 +1,6 @@
 import json
 import basicauth
+import markdown
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
@@ -39,6 +40,16 @@ def index():
         (g.user['id'],)
     ).fetchall()
     return render_template('endpoint_manager/index.html', endpoints=cursor)
+#TODO: disable request limit for admin
+
+
+@bp.route('/documentation')
+@login_required
+def documentation():
+    with open('README.md', 'r') as f:
+        text = f.read()
+        mkd_text = markdown.markdown(text)
+    return render_template('endpoint_manager/documentation.html', mkd_text=mkd_text)
 
 
 @bp.route('/upload', methods=('GET', 'POST'))
@@ -50,7 +61,8 @@ def upload():
         data = request.form['data']
         availability = request.form['availability']
         status = request.form['status']
-        json_validation = request.form['json_validation']
+        json_validation = request.form['data_type']
+        print(json_validation)
         daily_rate_limit = request.form['daily_rate_limit']
         error = None
 
@@ -113,13 +125,13 @@ def update(id):
         data = request.form['data']
         availability = request.form['availability']
         status = request.form['status']
-        json_validation = request.form['json_validation']
+        json_validation = request.form['data_type']
         daily_rate_limit = request.form['daily_rate_limit']
         error = None
 
         if json_validation == '1' and not validate_json(data):
             error = 'Invalid json.'
-        else:
+        elif json_validation == '1' and validate_json(data):
             data = json.dumps(json.loads(data), indent=3)
 
         if not name:
@@ -217,7 +229,7 @@ def api_fetch(name):
         cursor = fetch_data(fetch_id['id'], check_author=False)
         return cursor['data']
     else:
-        return error, 401
+        return 401
 
 
 @bp.route('/api/upload', methods=('POST',))
@@ -320,7 +332,6 @@ def api_update():
         (client_id,)
     ).fetchone()
 
-
     if access is None:
         close_db()
         return 'Client not authorised.', 401
@@ -331,7 +342,7 @@ def api_update():
     # Check if endpoint exists
     db = get_db()
 
-        # Check response for values
+    # Check response for values
     if 'name' not in request.get_json():
         close_db()
         return 'ValueError: name missing.', 400
