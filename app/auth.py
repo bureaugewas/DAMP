@@ -1,8 +1,6 @@
 import functools
-import os
 import secrets
 import datetime
-import jwt
 
 from datetime import timedelta, date
 

@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Ddist.iml" filepath="$PROJECT_DIR$/.idea/Ddist.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Umbrel/.idea/Umbrel.iml" filepath="$PROJECT_DIR$/../Umbrel/.idea/Umbrel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../umbrel-apps/.idea/umbrel-apps.iml" filepath="$PROJECT_DIR$/../umbrel-apps/.idea/umbrel-apps.iml" />
     </modules>
   </component>
 </project>

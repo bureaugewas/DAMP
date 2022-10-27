@@ -1,5 +1,0 @@
-.pytest_cache
-.build
-.DAMP.egg-info
-.dist
-.tests

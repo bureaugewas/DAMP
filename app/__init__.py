@@ -1,6 +1,4 @@
 import os
-import json
-import limits.storage
 
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -9,7 +7,6 @@ from flask_misaka import Misaka
 from flask import (
     Flask, session, Blueprint, flash, g, redirect, render_template, request, url_for
 )
-from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 
